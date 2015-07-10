@@ -29,7 +29,7 @@ Library containing additional annotations for usage in APIs based on JAX-RS and 
 ###Integration to Maven build lifecycle
 Tool is currently in SNAPSHOT version and was not published in Maven central repository yet. For using it, here is workaround to download and build JRAPIDoc locally on your machine. Follow these steps to get local build:
 ```
-$ git clone git@github.com:sarzwest/jrapidoc.git
+$ git clone https://github.com/projectodd/jrapidoc.git
 $ cd jrapidoc
 $ mvn install -Prelease
 ```

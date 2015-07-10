@@ -16,9 +16,9 @@
     </description>
 
     <scm>
-        <url>https://github.com/sarzwest/jrapidoc</url>
-        <connection>scm:git:git@github.com:sarzwest/jrapidoc.git</connection>
-        <developerConnection>scm:git:git@github.com:sarzwest/jrapidoc.git</developerConnection>
+        <url>https://github.com/projectodd/jrapidoc</url>
+        <connection>scm:git:git@github.com:projectodd/jrapidoc.git</connection>
+        <developerConnection>scm:git:git@github.com:projectodd/jrapidoc.git</developerConnection>
     </scm>
 
     <licenses>

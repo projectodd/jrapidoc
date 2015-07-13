@@ -1,9 +1,19 @@
+# Specific files
 /jrapidoc-gui/src/main/resources/jrapidoc.rest.model.json
-*~
-*.class
-*.iml
 
-# Package Files #
+# IDE and other editor files
+*~
+*.iml
+.idea
+.project
+.settings/
+.classpath
+
+# build directories
+target/
+/jrapidoc-gui/output/
+
+# Package Files 
 *.jar
 *.war
 *.ear
@@ -11,7 +21,4 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-*/.idea
-.idea
-*/target
-/target
+###

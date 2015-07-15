@@ -7,10 +7,6 @@ package airservice.entity;
 
 import airservice.entity.destination.DestinationOutput;
 
-/**
- * 
- * @author Tomas "sarzwest" Jiricek
- */
 public class Wrapper<T extends DestinationOutput> {
 
 	public T destO;

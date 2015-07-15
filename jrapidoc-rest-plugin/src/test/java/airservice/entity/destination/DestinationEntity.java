@@ -8,10 +8,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 import javax.ws.rs.core.UriBuilder;
 
-/**
- *
- * @author Tomas "sarzwest" Jiricek
- */
 public class DestinationEntity extends Destination {
     
     private static long idGenerator;

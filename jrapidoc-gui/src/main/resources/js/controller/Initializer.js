@@ -1,6 +1,3 @@
-/**
- * Created by Tomas "sarzwest" Jiricek on 21.3.15.
- */
 var Initializer = function () {
 
 };

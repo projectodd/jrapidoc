@@ -6,9 +6,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 10.1.15.
- */
 public class ReturnOption {
 
     int status;

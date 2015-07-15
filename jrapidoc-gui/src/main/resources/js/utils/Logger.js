@@ -1,6 +1,3 @@
-/**
- * Created by Tomas "sarzwest" Jiricek on 21.4.15.
- */
 var Logger = function() {
 };
 

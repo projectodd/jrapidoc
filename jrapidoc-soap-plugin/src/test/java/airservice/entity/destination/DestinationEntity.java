@@ -6,10 +6,6 @@ package airservice.entity.destination;
 
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
-/**
- *
- * @author Tomas "sarzwest" Jiricek
- */
 public class DestinationEntity extends Destination {
     
     private static long idGenerator;

@@ -13,10 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- *
- * @author Tomas "sarzwest" Jiricek
- */
 @XmlRootElement(name = "destination")
 public class DestinationOutput extends Destination {
 

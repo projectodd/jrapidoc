@@ -4,11 +4,6 @@
  */
 package airservice.entity.destination;
 
-/**
- *
- * @author Tomas "sarzwest" Jiricek
- */
-
 public class Destination{
     @Override
 	public String toString() {

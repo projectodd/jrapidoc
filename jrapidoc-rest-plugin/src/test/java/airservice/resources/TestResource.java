@@ -29,8 +29,6 @@ import java.util.logging.Logger;
 
 /**
  * REST Web Service
- *
- * @author Tomas "sarzwest" Jiricek
  */
 @Path("/test/{pathparam}/")
 @Produces("text/plain")

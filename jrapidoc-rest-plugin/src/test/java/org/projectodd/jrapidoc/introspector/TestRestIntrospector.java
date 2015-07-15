@@ -17,9 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 23.3.15.
- */
 public class TestRestIntrospector {
 
     public static final String DEFAULT_GROUP = "http://localhost:9080/airservice/rest";

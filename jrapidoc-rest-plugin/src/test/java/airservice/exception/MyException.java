@@ -8,10 +8,6 @@ package airservice.exception;
 
 import java.io.Serializable;
 
-/**
- *
- * @author Tomas "sarzwest" Jiricek
- */
 public class MyException extends Exception implements Serializable{
     
 }

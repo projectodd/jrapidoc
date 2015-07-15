@@ -9,9 +9,6 @@ import org.junit.Test;
 
 import java.util.Map;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 29.3.15.
- */
 public class TestTypeProvider {
 
     @Test

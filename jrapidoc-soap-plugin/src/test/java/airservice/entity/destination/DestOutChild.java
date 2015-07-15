@@ -5,10 +5,6 @@
  */
 package airservice.entity.destination;
 
-/**
- *
- * @author Tomas "sarzwest" Jiricek
- */
 public class DestOutChild extends DestinationOutput {
 
     public String varInDestChild = "inDestChild";

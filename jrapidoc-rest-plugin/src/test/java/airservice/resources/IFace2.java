@@ -8,10 +8,6 @@ package airservice.resources;
 
 import javax.ws.rs.core.Response;
 
-/**
- *
- * @author Tomas "sarzwest" Jiricek
- */
 public interface IFace2 {
 
     public Response foo();

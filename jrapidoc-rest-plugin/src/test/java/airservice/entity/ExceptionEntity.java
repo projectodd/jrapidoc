@@ -6,10 +6,6 @@
 
 package airservice.entity;
 
-/**
- *
- * @author Tomas "sarzwest" Jiricek
- */
 public class ExceptionEntity {
     
     public String desc;

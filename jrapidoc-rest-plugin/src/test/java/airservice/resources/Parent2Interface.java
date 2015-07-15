@@ -6,10 +6,6 @@
 
 package airservice.resources;
 
-/**
- *
- * @author Tomas "sarzwest" Jiricek
- */
 public interface Parent2Interface {
 
 }

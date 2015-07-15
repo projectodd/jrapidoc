@@ -4,15 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.projectodd.jrapidoc.model.object.type.Type;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 10.4.15.
- */
-@JsonPropertyOrder({"typeDescription", "required", "type"})
+@JsonPropertyOrder({ "typeDescription", "required", "type" })
 public class TransportType {
 
     Type type;
+    
     @JsonProperty("typeDescription")
     String description;
+    
     @JsonProperty("required")
     Boolean isRequired;
 
@@ -46,7 +45,7 @@ public class TransportType {
         this.isRequired = isRequired;
     }
 
-    public static class TransportTypeBuilder{
+    public static class TransportTypeBuilder {
         Type type;
         String description;
         Boolean isRequired;
@@ -66,7 +65,7 @@ public class TransportType {
             return this;
         }
 
-        public TransportType build(){
+        public TransportType build() {
             return new TransportType(type, description, isRequired);
         }
 

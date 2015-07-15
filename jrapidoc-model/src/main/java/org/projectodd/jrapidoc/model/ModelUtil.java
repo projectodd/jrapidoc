@@ -5,18 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 29.3.15.
- */
 public class ModelUtil {
 
-    static Set<String> numberPrimitiveTypes = new HashSet<String>(Arrays.asList(new String[]{"byte", "short",
-            "int", "long", "float", "double"}));
-    static Set<String> booleanPrimitiveTypes = new HashSet<String>(Arrays.asList(new String[]{"boolean"}));
-    static Set<Class<?>> booleanTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[]{Boolean.class}));
-    static Set<String> stringPrimitiveTypes = new HashSet<String>(Arrays.asList(new String[]{"char"}));
-    static Set<Class<?>> stringTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[]{String.class}));
-
+    static Set<String> numberPrimitiveTypes = new HashSet<String>(Arrays.asList(new String[] { "byte", "short", "int", "long", "float", "double" }));
+    static Set<String> booleanPrimitiveTypes = new HashSet<String>(Arrays.asList(new String[] { "boolean" }));
+    static Set<Class<?>> booleanTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { Boolean.class }));
+    static Set<String> stringPrimitiveTypes = new HashSet<String>(Arrays.asList(new String[] { "char" }));
+    static Set<Class<?>> stringTypes = new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { String.class }));
 
     public static String getSimpleTypeSignature(Class<?> clazz, List<Class<?>> parameterClasses) {
         if (isNumericType(clazz)) {

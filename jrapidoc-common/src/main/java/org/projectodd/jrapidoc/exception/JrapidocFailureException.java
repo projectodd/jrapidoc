@@ -2,10 +2,11 @@ package org.projectodd.jrapidoc.exception;
 
 /**
  * Exception mapped to {@link org.apache.maven.plugin.MojoFailureException}
- *
- * Created by papa on 25.4.15.
  */
 public class JrapidocFailureException extends Exception {
+    
+    private static final long serialVersionUID = -3916136589550267005L;
+
     public JrapidocFailureException() {
     }
 

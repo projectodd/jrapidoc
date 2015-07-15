@@ -1,19 +1,5 @@
 package org.projectodd.jrapidoc.introspector;
 
-import org.apache.commons.lang3.StringUtils;
-import org.projectodd.jrapidoc.exception.JrapidocExecutionException;
-import org.projectodd.jrapidoc.exception.JrapidocFailureException;
-import org.projectodd.jrapidoc.logger.Logger;
-import org.projectodd.jrapidoc.model.APIModel;
-import org.projectodd.jrapidoc.model.ServiceGroup;
-import org.projectodd.jrapidoc.model.handler.ModelHandler;
-import org.projectodd.jrapidoc.model.type.provider.JacksonJaxbJsonProvider;
-import org.projectodd.jrapidoc.model.type.provider.JacksonJaxbProvider;
-import org.projectodd.jrapidoc.model.type.provider.TypeProvider;
-import org.projectodd.jrapidoc.model.type.provider.TypeProviderFactory;
-import org.projectodd.jrapidoc.plugin.ConfigGroup;
-
-import javax.jws.WebService;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -22,13 +8,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 7.4.15.
- */
+import javax.jws.WebService;
+
+import org.apache.commons.lang3.StringUtils;
+import org.projectodd.jrapidoc.exception.JrapidocExecutionException;
+import org.projectodd.jrapidoc.exception.JrapidocFailureException;
+import org.projectodd.jrapidoc.logger.Logger;
+import org.projectodd.jrapidoc.model.APIModel;
+import org.projectodd.jrapidoc.model.ServiceGroup;
+import org.projectodd.jrapidoc.model.handler.ModelHandler;
+import org.projectodd.jrapidoc.model.type.provider.JacksonJaxbProvider;
+import org.projectodd.jrapidoc.model.type.provider.TypeProvider;
+import org.projectodd.jrapidoc.model.type.provider.TypeProviderFactory;
+import org.projectodd.jrapidoc.plugin.ConfigGroup;
+
 public class SoapIntrospector extends AbstractIntrospector {
 
     @Override
-    public void run(URL[] urlsForClassloader, List<ConfigGroup> groups, String typeProviderClass, File output, List<String> modelHandlerClasses, Map<String, String> customInfo) throws JrapidocExecutionException, JrapidocFailureException {
+    public void run(URL[] urlsForClassloader, List<ConfigGroup> groups, String typeProviderClass, File output, List<String> modelHandlerClasses,
+            Map<String, String> customInfo) throws JrapidocExecutionException, JrapidocFailureException {
         Logger.info("");
         Logger.info("Introspection started");
         Logger.info("");
@@ -43,7 +41,8 @@ public class SoapIntrospector extends AbstractIntrospector {
         Logger.info("");
     }
 
-    APIModel createModel(Map<String, String> customInfo, List<ConfigGroup> groups, ClassLoader loader, String typeProviderClass) throws JrapidocExecutionException, JrapidocFailureException {
+    APIModel createModel(Map<String, String> customInfo, List<ConfigGroup> groups, ClassLoader loader, String typeProviderClass)
+            throws JrapidocExecutionException, JrapidocFailureException {
         try {
             TypeProvider typeProvider = getTypeProvider(typeProviderClass, loader);
             SEIProcessor seiProcessor = getSeiClassProcessor(typeProvider, loader);
@@ -59,17 +58,20 @@ public class SoapIntrospector extends AbstractIntrospector {
     }
 
     TypeProvider getTypeProvider(String typeProviderClass, ClassLoader loader) {
-        return TypeProviderFactory.createTypeProvider((StringUtils.isEmpty(typeProviderClass) ? JacksonJaxbProvider.class.getCanonicalName() : typeProviderClass), loader);
+        return TypeProviderFactory.createTypeProvider((StringUtils.isEmpty(typeProviderClass) ? JacksonJaxbProvider.class.getCanonicalName()
+                : typeProviderClass), loader);
     }
 
-    ServiceGroup createServiceGroup(String basePath, String description, Set<Class<?>> resourceClasses, SEIProcessor seiProcessor) throws JrapidocExecutionException {
+    ServiceGroup createServiceGroup(String basePath, String description, Set<Class<?>> resourceClasses, SEIProcessor seiProcessor)
+            throws JrapidocExecutionException {
         ServiceGroup.ServiceGroupBuilder serviceGroupBuilder = new ServiceGroup.ServiceGroupBuilder();
         serviceGroupBuilder.baseUrl(basePath);
         serviceGroupBuilder.description(description);
         return seiProcessor.createServiceGroup(resourceClasses, serviceGroupBuilder);
     }
 
-    void addServiceGroups(List<ConfigGroup> groups, SEIProcessor seiProcessor, ClassLoader loader, APIModel.APIModelBuilder APIModelBuilder) throws JrapidocExecutionException {
+    void addServiceGroups(List<ConfigGroup> groups, SEIProcessor seiProcessor, ClassLoader loader, APIModel.APIModelBuilder APIModelBuilder)
+            throws JrapidocExecutionException {
         for (ConfigGroup group : groups) {
             Logger.info("Service group {0} processing started", group.getBaseUrl());
             Set<Class<?>> resourceClasses = getScannedClasses(group.getIncludes(), group.getExcludes(), loader, WebService.class);

@@ -1,21 +1,21 @@
 package org.projectodd.jrapidoc.model.type.provider;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.projectodd.jrapidoc.model.object.type.Type;
-import org.projectodd.jrapidoc.model.type.provider.converter.JacksonToJrapidocProcessor;
-import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.util.Map;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 25.3.15.
- */
+import org.projectodd.jrapidoc.model.object.type.Type;
+import org.projectodd.jrapidoc.model.type.provider.converter.JacksonToJrapidocProcessor;
+
+import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
+
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class JacksonJsonProvider extends TypeProvider {
 
     protected ObjectMapper objectMapper;
+    
     protected JacksonToJrapidocProcessor processor;
 
     public JacksonJsonProvider() {
@@ -41,7 +41,7 @@ public class JacksonJsonProvider extends TypeProvider {
             if (((Class) genericType).isArray()) {
                 javaType = objectMapper.getTypeFactory().constructArrayType(((Class) genericType).getComponentType());
             } else {
-                javaType = objectMapper.getTypeFactory().constructParametrizedType((Class) genericType, (Class) genericType, new Class[]{});
+                javaType = objectMapper.getTypeFactory().constructParametrizedType((Class) genericType, (Class) genericType, new Class[] {});
             }
         } else if (genericType instanceof ParameterizedType) {
             ParameterizedType paramType = (ParameterizedType) genericType;
@@ -55,7 +55,8 @@ public class JacksonJsonProvider extends TypeProvider {
             for (int i = 0; i < javaTypes.length; i++) {
                 javaTypes[i] = createJavaType(genericTypes[i]);
             }
-            javaType = objectMapper.getTypeFactory().constructParametrizedType((Class) paramType.getRawType(), (Class) paramType.getRawType(), javaTypes);
+            javaType = objectMapper.getTypeFactory().constructParametrizedType((Class) paramType.getRawType(), (Class) paramType.getRawType(),
+                    javaTypes);
         } else if (genericType instanceof TypeVariable) {
             TypeVariable typeVariable = ((TypeVariable) genericType);
             java.lang.reflect.Type bound = typeVariable.getBounds()[0];

@@ -24,9 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 7.4.15.
- */
 public class SEIProcessor {
 
     TypeProvider typeProvider;
@@ -37,7 +34,8 @@ public class SEIProcessor {
         this.loader = loader;
     }
 
-    public ServiceGroup createServiceGroup(Set<Class<?>> seiClasses, ServiceGroup.ServiceGroupBuilder serviceGroupBuilder) throws JrapidocExecutionException {
+    public ServiceGroup createServiceGroup(Set<Class<?>> seiClasses, ServiceGroup.ServiceGroupBuilder serviceGroupBuilder)
+            throws JrapidocExecutionException {
         for (Class<?> seiClass : seiClasses) {
             Logger.info("{0} processing started", seiClass.getCanonicalName());
             seiClass = getSEI(seiClass);
@@ -135,7 +133,8 @@ public class SEIProcessor {
             soapBindingAnno = getAnnotation(seiClass.getDeclaredAnnotations(), SOAPBinding.class);
         }
         if (soapBindingAnno != null) {
-            soapBindingBuilder.parameterStyle(soapBindingAnno.parameterStyle().name()).style(soapBindingAnno.style().name()).use(soapBindingAnno.use().name()).build();
+            soapBindingBuilder.parameterStyle(soapBindingAnno.parameterStyle().name()).style(soapBindingAnno.style().name())
+                    .use(soapBindingAnno.use().name()).build();
         }
         methodBuilder.soapBinding(soapBindingBuilder.build());
     }
@@ -146,10 +145,11 @@ public class SEIProcessor {
             addReturnOptionDescription(method, returnBuilder);
             addOutputHeaders(method, returnBuilder);
             addOutputParams(method, returnBuilder);
-            HeaderParam headerParam = new HeaderParam.HeaderParamBuilder().setName(HeaderParam.CONTENT_TYPE).setOptions(new String[]{"application/xml"}).setRequired(true).build();
+            HeaderParam headerParam = new HeaderParam.HeaderParamBuilder().setName(HeaderParam.CONTENT_TYPE)
+                    .setOptions(new String[] { "application/xml" }).setRequired(true).build();
             returnBuilder.httpStatus(200).headerParams(Arrays.asList(headerParam));
             Return returnOption = returnBuilder.build();
-            List<Return> returnOptions = new ArrayList<Return>(Arrays.asList(new Return[]{returnOption}));
+            List<Return> returnOptions = new ArrayList<Return>(Arrays.asList(new Return[] { returnOption }));
             addExceptionTypes(method, returnOptions);
             methodBuilder.returnOptions(returnOptions);
         }
@@ -157,7 +157,7 @@ public class SEIProcessor {
 
     /**
      * Used for non exception return option
-     *
+     * 
      * @param method
      * @param returnBuilder
      */
@@ -210,7 +210,8 @@ public class SEIProcessor {
             Annotation[] annotations = method.getParameterAnnotations()[i];
             if (isHeader(annotations)) {
                 if (isInputMode(annotations)) {
-                    TransportType soapInputHeader = new TransportType.TransportTypeBuilder().type(createType(param)).description(getDescription(annotations)).isRequired(getIsRequired(annotations)).build();
+                    TransportType soapInputHeader = new TransportType.TransportTypeBuilder().type(createType(param))
+                            .description(getDescription(annotations)).isRequired(getIsRequired(annotations)).build();
                     methodBuilder.soapInputHeader(soapInputHeader);
                 }
             }
@@ -225,7 +226,8 @@ public class SEIProcessor {
             Annotation[] annotations = method.getParameterAnnotations()[i];
             if (isInputMode(annotations)) {
                 if (!isHeader(annotations)) {
-                    TransportType soapInputParameter = new TransportType.TransportTypeBuilder().type(createType(param)).description(getDescription(annotations)).isRequired(getIsRequired(annotations)).build();
+                    TransportType soapInputParameter = new TransportType.TransportTypeBuilder().type(createType(param))
+                            .description(getDescription(annotations)).isRequired(getIsRequired(annotations)).build();
                     methodBuilder.parameter(soapInputParameter);
                 }
             }
@@ -239,7 +241,8 @@ public class SEIProcessor {
                 Annotation[] annotations = method.getParameterAnnotations()[i];
                 if (isHeader(annotations)) {
                     if (isOutputMode(annotations)) {
-                        TransportType soapOutputHeader = new TransportType.TransportTypeBuilder().type(createType(param)).description(getDescription(annotations)).build();
+                        TransportType soapOutputHeader = new TransportType.TransportTypeBuilder().type(createType(param))
+                                .description(getDescription(annotations)).build();
                         returnBuilder.soapOutputHeader(soapOutputHeader);
                     }
                 }
@@ -254,7 +257,8 @@ public class SEIProcessor {
             for (int i = 0; i < method.getGenericParameterTypes().length; i++) {
                 Type param = extractFromHolder(method.getGenericParameterTypes()[i]);
                 Annotation[] annotations = method.getParameterAnnotations()[i];
-                TransportType soapOutputParameter = new TransportType.TransportTypeBuilder().type(createType(param)).description(getDescription(annotations)).build();
+                TransportType soapOutputParameter = new TransportType.TransportTypeBuilder().type(createType(param))
+                        .description(getDescription(annotations)).build();
                 if (isOutputMode(method.getParameterAnnotations()[i])) {
                     if (!isHeader(method.getParameterAnnotations()[i])) {
                         returnTypes.add(soapOutputParameter);
@@ -268,7 +272,8 @@ public class SEIProcessor {
 
     void addExceptionTypes(Method method, List<Return> returnOptions) {
         DocReturns docReturnsAnno = method.getAnnotation(DocReturns.class);
-        if (docReturnsAnno != null) {//take exception types from DocReturns annotation (precedence)
+        if (docReturnsAnno != null) {// take exception types from DocReturns
+                                     // annotation (precedence)
             for (DocReturn docReturnAnno : docReturnsAnno.value()) {
                 if (!docReturnAnno.type().equals(Void.class)) {
                     String returnOptionDesc = StringUtils.isEmpty(docReturnAnno.description()) ? null : docReturnAnno.description();
@@ -277,7 +282,7 @@ public class SEIProcessor {
                 }
             }
         } else {
-            //take exception types from method signature
+            // take exception types from method signature
             for (Class<?> exception : method.getExceptionTypes()) {
                 addExceptionType(null, null, 500, exception, returnOptions);
             }
@@ -286,9 +291,11 @@ public class SEIProcessor {
 
     void addExceptionType(String returnOptionDesc, String typeDescription, int httpStatus, Class<?> classType, List<Return> returnOptions) {
         TransportType exceptionTransport = new TransportType.TransportTypeBuilder().type(createType(classType)).description(typeDescription).build();
-        List<TransportType> transportTypes = new ArrayList<TransportType>(Arrays.asList(new TransportType[]{exceptionTransport}));
-        List<HeaderParam> httpHeaders = new ArrayList<HeaderParam>(Arrays.asList(new HeaderParam[]{new HeaderParam.HeaderParamBuilder().setName(HeaderParam.CONTENT_TYPE).setOptions(new String[]{"application/xml"}).setRequired(true).build()}));
-        Return returnException = new Return.ReturnBuilder().httpStatus(httpStatus).description(returnOptionDesc).returnTypes(transportTypes).headerParams(httpHeaders).build();
+        List<TransportType> transportTypes = new ArrayList<TransportType>(Arrays.asList(new TransportType[] { exceptionTransport }));
+        List<HeaderParam> httpHeaders = new ArrayList<HeaderParam>(Arrays.asList(new HeaderParam[] { new HeaderParam.HeaderParamBuilder()
+                .setName(HeaderParam.CONTENT_TYPE).setOptions(new String[] { "application/xml" }).setRequired(true).build() }));
+        Return returnException = new Return.ReturnBuilder().httpStatus(httpStatus).description(returnOptionDesc).returnTypes(transportTypes)
+                .headerParams(httpHeaders).build();
         returnOptions.add(returnException);
     }
 
@@ -297,7 +304,8 @@ public class SEIProcessor {
             if (!method.getGenericReturnType().equals(Void.TYPE)) {
                 DocReturn docReturnAnno = getNonExceptionDocReturn(method);
                 String description = (docReturnAnno == null) ? null : docReturnAnno.typeDescription();
-                TransportType soapOutputParameter = new TransportType.TransportTypeBuilder().description(description).type(createType(method.getGenericReturnType())).build();
+                TransportType soapOutputParameter = new TransportType.TransportTypeBuilder().description(description)
+                        .type(createType(method.getGenericReturnType())).build();
                 returnTypes.add(soapOutputParameter);
             }
         }
@@ -308,7 +316,8 @@ public class SEIProcessor {
             if (!method.getGenericReturnType().equals(Void.TYPE)) {
                 DocReturn docReturnAnno = getNonExceptionDocReturn(method);
                 String typeDescription = (docReturnAnno == null) ? null : docReturnAnno.typeDescription();
-                TransportType soapOutputHeader = new TransportType.TransportTypeBuilder().description(typeDescription).type(createType(method.getGenericReturnType())).build();
+                TransportType soapOutputHeader = new TransportType.TransportTypeBuilder().description(typeDescription)
+                        .type(createType(method.getGenericReturnType())).build();
                 returnBuilder.soapOutputHeader(soapOutputHeader);
             }
         }
@@ -368,9 +377,9 @@ public class SEIProcessor {
         methodBuilder.name(method.getName());
     }
 
-    Boolean getIsRequired(Annotation[] annotations){
+    Boolean getIsRequired(Annotation[] annotations) {
         DocIsRequired isRequired = getAnnotation(annotations, DocIsRequired.class);
-        if(isRequired == null){
+        if (isRequired == null) {
             return null;
         }
         return isRequired.value();

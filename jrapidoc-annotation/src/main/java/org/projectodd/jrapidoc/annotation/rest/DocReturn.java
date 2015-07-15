@@ -6,52 +6,59 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotatation can be used on resource methods for customizing return option in documentation.<br/>
+ * Annotatation can be used on resource methods for customizing return option in
+ * documentation.<br/>
  * <br/>
- * Created by Tomas "sarzwest" Jiricek on 4.1.15.<br/>
  */
-@Target({ElementType.METHOD})
+@Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DocReturn {
 
     /**
      * Http status returned
+     * 
      * @return
      */
     int http();
 
     /**
      * Http header names returned
+     * 
      * @return
      */
     String[] headers() default {};
 
     /**
      * Http cookie names returned
+     * 
      * @return
      */
     String[] cookies() default {};
 
     /**
      * Java type returned
+     * 
      * @return
      */
     Class<?> type() default Void.class;
 
     /**
      * Wrapper for {@link DocReturn#type()}.
+     * 
      * @return
      */
     Structure structure() default Structure.OBJECT;
 
     /**
      * Description of return option
+     * 
      * @return
      */
     String description() default "";
 
     /**
      * Description of returned type (set in {@link DocReturn#type()})
+     * 
      * @return
      */
     String typeDescription() default "";
@@ -66,7 +73,8 @@ public @interface DocReturn {
          */
         ARRAY,
         /**
-         * {@link DocReturn#type()} is wrapped into map as value type (key type is string)
+         * {@link DocReturn#type()} is wrapped into map as value type (key type
+         * is string)
          */
         MAP
     }

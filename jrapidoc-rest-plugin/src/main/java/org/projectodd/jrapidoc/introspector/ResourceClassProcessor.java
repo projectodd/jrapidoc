@@ -1,19 +1,38 @@
 package org.projectodd.jrapidoc.introspector;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
-import org.jboss.resteasy.spi.metadata.*;
+import org.jboss.resteasy.spi.metadata.MethodParameter;
+import org.jboss.resteasy.spi.metadata.Parameter;
+import org.jboss.resteasy.spi.metadata.ResourceBuilder;
+import org.jboss.resteasy.spi.metadata.ResourceClass;
+import org.jboss.resteasy.spi.metadata.ResourceLocator;
+import org.jboss.resteasy.spi.metadata.ResourceMethod;
+import org.jboss.resteasy.spi.metadata.ReturnOption;
 import org.projectodd.jrapidoc.RestUtil;
 import org.projectodd.jrapidoc.logger.Logger;
-import org.projectodd.jrapidoc.model.*;
+import org.projectodd.jrapidoc.model.Method;
+import org.projectodd.jrapidoc.model.ModelUtil;
+import org.projectodd.jrapidoc.model.Return;
+import org.projectodd.jrapidoc.model.Service;
+import org.projectodd.jrapidoc.model.ServiceGroup;
+import org.projectodd.jrapidoc.model.TransportType;
 import org.projectodd.jrapidoc.model.object.type.Type;
-import org.projectodd.jrapidoc.model.param.*;
+import org.projectodd.jrapidoc.model.param.CookieParam;
+import org.projectodd.jrapidoc.model.param.FormParam;
+import org.projectodd.jrapidoc.model.param.HeaderParam;
+import org.projectodd.jrapidoc.model.param.MatrixParam;
+import org.projectodd.jrapidoc.model.param.Param;
+import org.projectodd.jrapidoc.model.param.PathParam;
+import org.projectodd.jrapidoc.model.param.QueryParam;
 import org.projectodd.jrapidoc.model.type.provider.TypeProvider;
 
-import java.util.*;
-
-/**
- * Created by Tomas "sarzwest" Jiricek on 26.1.15.
- */
 public class ResourceClassProcessor {
 
     TypeProvider typeProvider;
@@ -24,7 +43,7 @@ public class ResourceClassProcessor {
 
     /**
      * Main method, creates API model from metadata
-     *
+     * 
      * @param resourceClasses
      * @return
      */
@@ -47,7 +66,7 @@ public class ResourceClassProcessor {
             Param param = new HeaderParam.HeaderParamBuilder().setOptions(resourceClass.getConsumes()).setName(HeaderParam.ACCEPT).build();
             methodBuilder.param(param.getType(), param);
         } else {
-            Param param = new HeaderParam.HeaderParamBuilder().setOptions(new String[]{"*/*"}).setName(HeaderParam.ACCEPT).build();
+            Param param = new HeaderParam.HeaderParamBuilder().setOptions(new String[] { "*/*" }).setName(HeaderParam.ACCEPT).build();
             methodBuilder.param(param.getType(), param);
         }
     }
@@ -61,7 +80,7 @@ public class ResourceClassProcessor {
             Param param = new HeaderParam.HeaderParamBuilder().setOptions(resourceClass.getProduces()).setName(HeaderParam.CONTENT_TYPE).build();
             methodBuilder.param(param.getType(), param);
         } else {
-            Param param = new HeaderParam.HeaderParamBuilder().setOptions(new String[]{"*/*"}).setName(HeaderParam.CONTENT_TYPE).build();
+            Param param = new HeaderParam.HeaderParamBuilder().setOptions(new String[] { "*/*" }).setName(HeaderParam.CONTENT_TYPE).build();
             methodBuilder.param(param.getType(), param);
         }
     }
@@ -99,14 +118,16 @@ public class ResourceClassProcessor {
                 newResourceClass.setPath(resourceLocator.getFullpath());
                 newResourceClass.setConstructor(resourceClass.getConstructor());
                 ServiceGroup.ServiceGroupBuilder serviceGroupBuilder = new ServiceGroup.ServiceGroupBuilder();
-                ServiceGroup locatorSubModel = createServiceGroup(new HashSet<ResourceClass>(Arrays.asList(new ResourceClass[]{newResourceClass})), serviceGroupBuilder);
+                ServiceGroup locatorSubModel = createServiceGroup(
+                        new HashSet<ResourceClass>(Arrays.asList(new ResourceClass[] { newResourceClass })), serviceGroupBuilder);
                 for (Service service : locatorSubModel.getServices().values()) {
                     for (Method method : service.getMethods().values()) {
                         resourceBuilder.method(method);
                     }
                 }
             } catch (Exception e) {
-                Logger.error(e, "Problem during preintrospection of locator class {0}, skipping this class", resourceLocator.getReturnType().getCanonicalName());
+                Logger.error(e, "Problem during preintrospection of locator class {0}, skipping this class", resourceLocator.getReturnType()
+                        .getCanonicalName());
             } finally {
                 Logger.info("{0} subresource locator processing finished", resourceLocator.getReturnType().getCanonicalName());
             }
@@ -161,14 +182,15 @@ public class ResourceClassProcessor {
 
     Return createReturnOption(ReturnOption returnOption) {
         List<TransportType> returnTypes = new ArrayList<TransportType>();
-        if (returnOption.getReturnClass() != null &&
-                !returnOption.getReturnClass().equals(Void.class)) {
+        if (returnOption.getReturnClass() != null && !returnOption.getReturnClass().equals(Void.class)) {
             Type returnType = typeProvider.createType(returnOption.getParameterized());
-            returnTypes.add(new TransportType.TransportTypeBuilder().type(returnType).description(StringUtils.isEmpty(returnOption.getTypeDescription()) ? null : returnOption.getTypeDescription()).build());
+            returnTypes.add(new TransportType.TransportTypeBuilder().type(returnType)
+                    .description(StringUtils.isEmpty(returnOption.getTypeDescription()) ? null : returnOption.getTypeDescription()).build());
         }
         List<HeaderParam> headerParams = createReturnHeaders(returnOption.getHeaders());
         List<CookieParam> cookieParams = createReturnCookies(returnOption.getCookies());
-        return new Return.ReturnBuilder().httpStatus(returnOption.getStatus()).headerParams(headerParams).cookieParams(cookieParams).returnTypes(returnTypes).description(returnOption.getDescription()).build();
+        return new Return.ReturnBuilder().httpStatus(returnOption.getStatus()).headerParams(headerParams).cookieParams(cookieParams)
+                .returnTypes(returnTypes).description(returnOption.getDescription()).build();
     }
 
     List<HeaderParam> createReturnHeaders(List<String> headersString) {
@@ -188,24 +210,25 @@ public class ResourceClassProcessor {
     }
 
     void addPaths(Method.MethodBuilder methodBuilder, ResourceClass resourceClass, ResourceMethod resourceMethod) {
-        String methodPath = RestUtil.getPathInModelFormat(RestUtil.trimSlash(resourceClass.getPath()) + "/" + RestUtil.trimSlash(resourceMethod.getPath()));
+        String methodPath = RestUtil.getPathInModelFormat(RestUtil.trimSlash(resourceClass.getPath()) + "/"
+                + RestUtil.trimSlash(resourceMethod.getPath()));
         methodBuilder.path(methodPath);
         String methodPathExample;
-        if(StringUtils.isEmpty(resourceClass.getPathExample())){
+        if (StringUtils.isEmpty(resourceClass.getPathExample())) {
             methodPathExample = RestUtil.trimSlash(resourceClass.getPath());
-        }else{
+        } else {
             methodPathExample = RestUtil.trimSlash(resourceClass.getPathExample());
         }
         methodPathExample += "/";
-        if(StringUtils.isEmpty(resourceMethod.getPathExample())){
+        if (StringUtils.isEmpty(resourceMethod.getPathExample())) {
             methodPathExample += RestUtil.trimSlash(resourceMethod.getPath());
-        }else{
+        } else {
             methodPathExample += RestUtil.trimSlash(resourceMethod.getPathExample());
         }
         methodPathExample = RestUtil.getPathInModelFormat(methodPathExample);
-        if(methodPathExample.equals(methodPath)){
+        if (methodPathExample.equals(methodPath)) {
             methodBuilder.pathExample(null);
-        }else{
+        } else {
             methodBuilder.pathExample(methodPathExample);
         }
     }
@@ -255,9 +278,6 @@ public class ResourceClassProcessor {
         return paramBuilder.build();
     }
 
-    /**
-     * Dosazeni za *Param typy a vytvoreni spravneho typu
-     */
     private Type createParameterType(Parameter parameter) {
         if (ModelUtil.isNumericType(parameter.getType())) {
             return typeProvider.createType(Integer.class);
@@ -271,7 +291,8 @@ public class ResourceClassProcessor {
     private TransportType createParameterType(MethodParameter[] parameters) {
         for (MethodParameter methodParameter : parameters) {
             if (methodParameter.getParamType().equals(MethodParameter.ParamType.MESSAGE_BODY)) {
-                return new TransportType.TransportTypeBuilder().type(typeProvider.createType(methodParameter.getGenericType())).description(methodParameter.getDescription()).build();
+                return new TransportType.TransportTypeBuilder().type(typeProvider.createType(methodParameter.getGenericType()))
+                        .description(methodParameter.getDescription()).build();
             }
         }
         return null;

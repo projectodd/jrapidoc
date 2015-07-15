@@ -1,15 +1,12 @@
 package org.projectodd.jrapidoc.plugin;
 
 import java.util.List;
-import java.util.Map;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 21.4.15.
- */
 public class ConfigGroup {
 
     private String baseUrl;
     private String description;
+    private String target;
     private List<String> includes;
     private List<String> excludes;
 
@@ -19,6 +16,10 @@ public class ConfigGroup {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
     }
 
     public void setIncludes(List<String> includes) {
@@ -31,6 +32,10 @@ public class ConfigGroup {
 
     public String getBaseUrl() {
         return baseUrl;
+    }
+
+    public String getTarget() {
+        return target;
     }
 
     public List<String> getIncludes() {

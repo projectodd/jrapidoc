@@ -4,20 +4,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 13.1.15.
- */
-@JsonPropertyOrder({"attributeName", "typeRef", "attributeDescription", "required"})
+@JsonPropertyOrder({ "attributeName", "typeRef", "attributeDescription", "required" })
 public class BeanProperty {
 
     public static String ROOT_VARIABLE = "root";
+    
     @JsonProperty("attributeName")
     String name;
+    
     @JsonIgnore
     Class<?> type;
+    
     String typeRef;
+    
     @JsonProperty("attributeDescription")
     String description;
+    
     @JsonProperty("required")
     boolean isRequired;
 
@@ -29,7 +31,7 @@ public class BeanProperty {
         this.isRequired = isRequired;
     }
 
-    public void addType(Class<?> type){
+    public void addType(Class<?> type) {
         this.type = type;
     }
 
@@ -55,12 +57,7 @@ public class BeanProperty {
 
     @Override
     public String toString() {
-        return "BeanProperty{" +
-                "name='" + name + '\'' +
-                ", type=" + type +
-                ", typeRef='" + typeRef + '\'' +
-                ", description='" + description + '\'' +
-                ", isRequired=" + isRequired +
-                '}';
+        return "BeanProperty{" + "name='" + name + '\'' + ", type=" + type + ", typeRef='" + typeRef + '\'' + ", description='" + description + '\''
+                + ", isRequired=" + isRequired + '}';
     }
 }

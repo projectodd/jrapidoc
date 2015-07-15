@@ -31,8 +31,10 @@ public class ResourceLocator {
         this.resourceClass = resourceClass;
         this.annotatedMethod = annotatedMethod;
         this.method = method;
-        // we initialize parameterized types based on the method of the resource class rather than the Method that is actually
-        // annotated.  This is so we have the appropriate parameterized type information.
+        // we initialize parameterized types based on the method of the resource
+        // class rather than the Method that is actually
+        // annotated. This is so we have the appropriate parameterized type
+        // information.
         this.genericReturnType = Types.resolveTypeVariables(resourceClass.getClazz(), method.getGenericReturnType());
         this.returnType = Types.getRawType(genericReturnType);
         this.params = new MethodParameter[method.getParameterTypes().length];
@@ -40,14 +42,15 @@ public class ResourceLocator {
             DocDescription desc = null;
             DocIsRequired isReq = null;
             Annotation[] annotations = method.getParameterAnnotations()[i];
-            for(Annotation a:annotations){
-                if(a.annotationType().equals(DocDescription.class)){
-                    desc = (DocDescription)a;
-                }else if(a.annotationType().equals(DocIsRequired.class)){
-                        isReq = (DocIsRequired)a;
+            for (Annotation a : annotations) {
+                if (a.annotationType().equals(DocDescription.class)) {
+                    desc = (DocDescription) a;
+                } else if (a.annotationType().equals(DocIsRequired.class)) {
+                    isReq = (DocIsRequired) a;
                 }
             }
-            this.params[i] = new MethodParameter(this, method.getParameterTypes()[i], method.getGenericParameterTypes()[i], annotatedMethod.getParameterAnnotations()[i], desc, isReq);
+            this.params[i] = new MethodParameter(this, method.getParameterTypes()[i], method.getGenericParameterTypes()[i],
+                    annotatedMethod.getParameterAnnotations()[i], desc, isReq);
         }
     }
 
@@ -57,7 +60,8 @@ public class ResourceLocator {
             if (param.getParamType().equals(Parameter.ParamType.MESSAGE_BODY)) {
                 messageBodyCount++;
                 if (messageBodyCount > 1) {
-                    throw new RuntimeException("Method " + method.getName() + " in " + resourceClass.getClazz().getCanonicalName() + " has more than one message body parameters.");
+                    throw new RuntimeException("Method " + method.getName() + " in " + resourceClass.getClazz().getCanonicalName()
+                            + " has more than one message body parameters.");
                 }
             }
         }

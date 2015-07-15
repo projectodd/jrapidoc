@@ -11,26 +11,24 @@ import java.lang.reflect.Type;
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public class ConstructorParameter extends Parameter
-{
-   protected Annotation[] annotations = {};
-   protected ResourceConstructor constructor;
+public class ConstructorParameter extends Parameter {
+    protected Annotation[] annotations = {};
+    protected ResourceConstructor constructor;
 
-   protected ConstructorParameter(ResourceConstructor constructor, Class<?> type, Type genericType, Annotation[] annotations, DocDescription docDescription, DocIsRequired docIsRequired)
-   {
-      super(constructor.getResourceClass(), type, genericType, (docDescription == null)?null: docDescription.value(), (docIsRequired == null)?null: docIsRequired.value());
-      this.annotations = annotations;
-      this.constructor = constructor;
-   }
+    protected ConstructorParameter(ResourceConstructor constructor, Class<?> type, Type genericType, Annotation[] annotations,
+            DocDescription docDescription, DocIsRequired docIsRequired) {
+        super(constructor.getResourceClass(), type, genericType, (docDescription == null) ? null : docDescription.value(),
+                (docIsRequired == null) ? null : docIsRequired.value());
+        this.annotations = annotations;
+        this.constructor = constructor;
+    }
 
-   @Override
-   public AccessibleObject getAccessibleObject()
-   {
-      return constructor.getConstructor();
-   }
+    @Override
+    public AccessibleObject getAccessibleObject() {
+        return constructor.getConstructor();
+    }
 
-   public Annotation[] getAnnotations()
-   {
-      return annotations;
-   }
+    public Annotation[] getAnnotations() {
+        return annotations;
+    }
 }

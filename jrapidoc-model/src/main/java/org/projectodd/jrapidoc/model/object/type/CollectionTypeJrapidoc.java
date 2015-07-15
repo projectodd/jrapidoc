@@ -2,13 +2,11 @@ package org.projectodd.jrapidoc.model.object.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 18.1.15.
- */
 public class CollectionTypeJrapidoc extends org.projectodd.jrapidoc.model.object.type.Type {
 
     @JsonIgnore
     private String includeType;
+    
     private String includeTypeRef;
 
     public CollectionTypeJrapidoc(String typeName, String typeRef, String includeType, String includeTypeRef) {
@@ -27,13 +25,17 @@ public class CollectionTypeJrapidoc extends org.projectodd.jrapidoc.model.object
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
 
         CollectionTypeJrapidoc that = (CollectionTypeJrapidoc) o;
 
-        if (!includeTypeRef.equals(that.includeTypeRef)) return false;
+        if (!includeTypeRef.equals(that.includeTypeRef))
+            return false;
 
         return true;
     }
@@ -47,9 +49,7 @@ public class CollectionTypeJrapidoc extends org.projectodd.jrapidoc.model.object
 
     @Override
     public String toString() {
-        return "CollectionTypeApition{" +
-                "includeType='" + includeType + '\'' +
-                ", includeTypeRef='" + includeTypeRef + '\'' +
-                "} " + super.toString();
+        return "CollectionTypeApition{" + "includeType='" + includeType + '\'' + ", includeTypeRef='" + includeTypeRef + '\'' + "} "
+                + super.toString();
     }
 }

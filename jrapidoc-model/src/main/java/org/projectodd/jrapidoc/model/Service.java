@@ -12,33 +12,42 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 23.12.14.
- */
-@JsonPropertyOrder({"path", "serviceName", "serviceDescription", "pathExample", "methods"})
+@JsonPropertyOrder({ "path", "serviceName", "serviceDescription", "pathExample", "methods" })
 public class Service {
 
     private String path;
+    
     private String pathExample;
+    
     @JsonIgnore
     private List<HeaderParam> headerParams = new ArrayList<HeaderParam>();
+    
     @JsonIgnore
     private List<CookieParam> cookieParams = new ArrayList<CookieParam>();
+    
     @JsonIgnore
     private List<FormParam> formParams = new ArrayList<FormParam>();
+    
     @JsonIgnore
     private List<MatrixParam> matrixParams = new ArrayList<MatrixParam>();
+    
     @JsonIgnore
     private List<PathParam> pathParams = new ArrayList<PathParam>();
+    
     @JsonIgnore
     private List<QueryParam> queryParams = new ArrayList<QueryParam>();
+    
     private Map<String, Method> methods = new TreeMap<String, Method>();
+    
     @JsonProperty("serviceDescription")
     private String description;
+    
     @JsonProperty("serviceName")
     private String name;
 
-    private Service(String path, String pathExample, List<HeaderParam> headerParams, List<CookieParam> cookieParams, List<FormParam> formParams, List<MatrixParam> matrixParams, List<PathParam> pathParams, List<QueryParam> queryParams, Map<String, Method> methods, String description, String name) {
+    private Service(String path, String pathExample, List<HeaderParam> headerParams, List<CookieParam> cookieParams, List<FormParam> formParams,
+            List<MatrixParam> matrixParams, List<PathParam> pathParams, List<QueryParam> queryParams, Map<String, Method> methods,
+            String description, String name) {
         this.path = path;
         this.pathExample = pathExample;
         this.headerParams = headerParams;
@@ -209,7 +218,8 @@ public class Service {
         }
 
         /**
-         * First try to add more specific value and then try to add less specific value.
+         * First try to add more specific value and then try to add less
+         * specific value.
          */
         protected void addHeaderParam(HeaderParam headerParam) {
             for (HeaderParam param : headerParams) {
@@ -241,7 +251,8 @@ public class Service {
         }
 
         public Service build() {
-            return new Service(path, pathExample, headerParams, cookieParams, formParams, matrixParams, pathParams, queryParams, methods, description, name);
+            return new Service(path, pathExample, headerParams, cookieParams, formParams, matrixParams, pathParams, queryParams, methods,
+                    description, name);
         }
     }
 }

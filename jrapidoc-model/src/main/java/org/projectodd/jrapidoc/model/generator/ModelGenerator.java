@@ -9,9 +9,6 @@ import org.projectodd.jrapidoc.model.APIModel;
 
 import java.io.*;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 3.4.15.
- */
 public class ModelGenerator {
 
     public static void generateModel(APIModel model, File output) throws JrapidocExecutionException {
@@ -19,10 +16,10 @@ public class ModelGenerator {
         try {
             outputStream = new FileOutputStream(output);
             generateModel(model, outputStream);
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             Logger.error(e, "File {0} was not found on filesystem", output.getAbsolutePath());
             throw new JrapidocExecutionException(e.getMessage(), e);
-        }finally {
+        } finally {
             if (outputStream != null) {
                 try {
                     outputStream.close();
@@ -35,13 +32,10 @@ public class ModelGenerator {
 
     public static void generateModel(APIModel model, OutputStream output) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibilityChecker(mapper.getSerializationConfig().getDefaultVisibilityChecker()
-                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+        mapper.setVisibilityChecker(mapper.getSerializationConfig().getDefaultVisibilityChecker().withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+                .withGetterVisibility(JsonAutoDetect.Visibility.NONE).withSetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL).setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(output, model);
         } catch (IOException e) {

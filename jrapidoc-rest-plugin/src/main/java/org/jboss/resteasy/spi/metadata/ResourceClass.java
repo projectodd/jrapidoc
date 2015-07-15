@@ -92,8 +92,8 @@ public class ResourceClass {
     }
 
     public ResourceMethod getResourceMethodByPath(String path) {
-        for (ResourceMethod method:resourceMethods){
-            if(method.getPath().equals(path)){
+        for (ResourceMethod method : resourceMethods) {
+            if (method.getPath().equals(path)) {
                 return method;
             }
         }

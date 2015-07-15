@@ -4,29 +4,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 23.12.14.
- */
-@JsonPropertyOrder({"parameterName", "parameterDescription", "required", "type", "typeRef"})
+@JsonPropertyOrder({ "parameterName", "parameterDescription", "required", "type", "typeRef" })
 public abstract class Param {
 
     public static enum Type {
-        FORM_PARAM,
-        QUERY_PARAM,
-        MATRIX_PARAM,
-        HEADER_PARAM,
-        PATH_PARAM,
-        COOKIE_PARAM
+        FORM_PARAM, QUERY_PARAM, MATRIX_PARAM, HEADER_PARAM, PATH_PARAM, COOKIE_PARAM
     };
 
     @JsonProperty("parameterName")
     private String name;
+    
     @JsonProperty("required")
     private Boolean isRequired;
+    
     @JsonIgnore
     private Type type;
+    
     @JsonProperty("parameterDescription")
     private String description;
+    
     private String typeRef;
 
     protected Param(String name, Boolean isRequired, String typeRef, Type type, String description) {
@@ -77,11 +73,14 @@ public abstract class Param {
         this.typeRef = typeRef;
     }
 
-    public static abstract class ParamBuilder{
+    public static abstract class ParamBuilder {
 
         String name;
+        
         Boolean isRequired;
+        
         String description;
+        
         String typeRef;
 
         public ParamBuilder setName(String name) {

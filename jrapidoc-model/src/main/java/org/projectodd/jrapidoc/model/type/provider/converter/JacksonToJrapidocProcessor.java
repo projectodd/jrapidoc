@@ -1,27 +1,32 @@
 package org.projectodd.jrapidoc.model.type.provider.converter;
 
-import com.fasterxml.jackson.core.SerializableString;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
-import com.fasterxml.jackson.databind.ser.std.*;
-import com.fasterxml.jackson.databind.type.*;
+import java.lang.reflect.Field;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.projectodd.jrapidoc.model.object.BeanProperty;
 import org.projectodd.jrapidoc.model.object.type.CollectionTypeJrapidoc;
 import org.projectodd.jrapidoc.model.object.type.CustomType;
 import org.projectodd.jrapidoc.model.object.type.MapTypeJrapidoc;
 import org.projectodd.jrapidoc.model.object.type.Type;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.fasterxml.jackson.core.SerializableString;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
+import com.fasterxml.jackson.databind.ser.std.AsArraySerializerBase;
+import com.fasterxml.jackson.databind.ser.std.BeanSerializerBase;
+import com.fasterxml.jackson.databind.ser.std.EnumSerializer;
+import com.fasterxml.jackson.databind.ser.std.MapSerializer;
+import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
+import com.fasterxml.jackson.databind.type.ArrayType;
+import com.fasterxml.jackson.databind.type.CollectionLikeType;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.MapLikeType;
+import com.fasterxml.jackson.databind.type.SimpleType;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 11.1.15.
- */
 public class JacksonToJrapidocProcessor {
 
     ObjectMapper objectMapper;
@@ -33,7 +38,7 @@ public class JacksonToJrapidocProcessor {
 
     /**
      * From Jackson type creates a JRAPIDoc type, type is stored in cache
-     *
+     * 
      * @param jacksonType
      * @return
      */
@@ -61,17 +66,18 @@ public class JacksonToJrapidocProcessor {
 
     /**
      * Same as {@link #getType(com.fasterxml.jackson.databind.type.SimpleType)}
-     *
+     * 
      * @param jacksonType
      * @return
      */
     public Type getType(CollectionLikeType jacksonType) {
-//        try {
+        // try {
         String signature = JacksonSignature.createSignature(jacksonType);
         JavaType contentType = jacksonType.getContentType();
         String contentSignature = JacksonSignature.createSignature(contentType);
         Class<?> containerClass = jacksonType.getRawClass();
-        CollectionTypeJrapidoc type = new CollectionTypeJrapidoc(containerClass.getName(), signature, contentType.getRawClass().getName(), contentSignature);
+        CollectionTypeJrapidoc type = new CollectionTypeJrapidoc(containerClass.getName(), signature, contentType.getRawClass().getName(),
+                contentSignature);
         if (cache.containsKey(signature)) {
             return cache.get(signature);
         }
@@ -82,7 +88,7 @@ public class JacksonToJrapidocProcessor {
 
     /**
      * Same as {@link #getType(com.fasterxml.jackson.databind.type.SimpleType)}
-     *
+     * 
      * @param jacksonType
      * @return
      */
@@ -102,7 +108,7 @@ public class JacksonToJrapidocProcessor {
 
     /**
      * Same as {@link #getType(com.fasterxml.jackson.databind.type.SimpleType)}
-     *
+     * 
      * @param jacksonType
      * @return
      */
@@ -113,7 +119,8 @@ public class JacksonToJrapidocProcessor {
         Class<?> containerClass = jacksonType.getRawClass();
         String keySignature = JacksonSignature.createSignature(keyType);
         String valSignature = JacksonSignature.createSignature(valueType);
-        MapTypeJrapidoc type = new MapTypeJrapidoc(containerClass.getName(), signature, keyType.getRawClass().getName(), keySignature, valueType.getRawClass().getName(), valSignature);
+        MapTypeJrapidoc type = new MapTypeJrapidoc(containerClass.getName(), signature, keyType.getRawClass().getName(), keySignature, valueType
+                .getRawClass().getName(), valSignature);
         if (cache.containsKey(signature)) {
             return cache.get(signature);
         }
@@ -125,8 +132,9 @@ public class JacksonToJrapidocProcessor {
 
     /**
      * Do redirection from general Jackson type to the concrete one
-     *
-     * @param type jackson type
+     * 
+     * @param type
+     *            jackson type
      * @return JRAPIDoc type
      */
     public Type getType(JavaType type) {
@@ -144,7 +152,7 @@ public class JacksonToJrapidocProcessor {
 
     /**
      * Do redirection from general Jackson serializer to the concrete one
-     *
+     * 
      * @param serializer
      * @param type
      */
@@ -167,7 +175,7 @@ public class JacksonToJrapidocProcessor {
 
     /**
      * Introspect serializer for collections
-     *
+     * 
      * @param collectionSerializer
      * @param type
      */
@@ -177,7 +185,7 @@ public class JacksonToJrapidocProcessor {
 
     /**
      * Introspect serializer for java beans
-     *
+     * 
      * @param beanSerializer
      * @param type
      */
@@ -190,7 +198,8 @@ public class JacksonToJrapidocProcessor {
                 JavaType propType = prop.getType();
                 getType(propType);
                 String signature = JacksonSignature.createSignature(propType);
-                type.addBeanProperty(new BeanProperty(prop.getName(), signature, prop.getPropertyType(), prop.getMetadata().getDescription(), prop.getMetadata().isRequired()));
+                type.addBeanProperty(new BeanProperty(prop.getName(), signature, prop.getPropertyType(), prop.getMetadata().getDescription(), prop
+                        .getMetadata().isRequired()));
             }
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
@@ -200,8 +209,8 @@ public class JacksonToJrapidocProcessor {
     }
 
     /**
-     * Introspect serializer for  enumerations
-     *
+     * Introspect serializer for enumerations
+     * 
      * @param enumSerializer
      * @param type
      */
@@ -213,7 +222,7 @@ public class JacksonToJrapidocProcessor {
 
     /**
      * Introspect serializer for map
-     *
+     * 
      * @param mapSerializer
      * @param type
      */
@@ -234,7 +243,7 @@ public class JacksonToJrapidocProcessor {
 
     /**
      * Do nothing for this serializer
-     *
+     * 
      * @param stdScalarSerializer
      * @param type
      */

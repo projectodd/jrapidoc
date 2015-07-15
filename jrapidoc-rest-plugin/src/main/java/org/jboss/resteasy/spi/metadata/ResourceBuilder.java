@@ -143,7 +143,7 @@ public class ResourceBuilder {
 
         /**
          * Resteasy @Form specific injection parameter
-         *
+         * 
          * @param prefix
          * @return
          */
@@ -155,7 +155,7 @@ public class ResourceBuilder {
 
         /**
          * Resteasy @Form specific injection parameter
-         *
+         * 
          * @return
          */
         public T form() {
@@ -163,7 +163,6 @@ public class ResourceBuilder {
             parameter.paramName = "";
             return (T) this;
         }
-
 
         public T headerParam(String name) {
             parameter.paramType = Parameter.ParamType.HEADER_PARAM;
@@ -194,9 +193,11 @@ public class ResourceBuilder {
             AccessibleObject injectTarget = parameter.getAccessibleObject();
             Class<?> type = parameter.getResourceClass().getClazz();
 
-            parameter.encoded = findAnnotation(annotations, Encoded.class) != null || injectTarget.isAnnotationPresent(Encoded.class) || type.isAnnotationPresent(Encoded.class);
+            parameter.encoded = findAnnotation(annotations, Encoded.class) != null || injectTarget.isAnnotationPresent(Encoded.class)
+                    || type.isAnnotationPresent(Encoded.class);
             DefaultValue defaultValue = findAnnotation(annotations, DefaultValue.class);
-            if (defaultValue != null) parameter.defaultValue = defaultValue.value();
+            if (defaultValue != null)
+                parameter.defaultValue = defaultValue.value();
 
             QueryParam query;
             HeaderParam header;
@@ -207,7 +208,6 @@ public class ResourceBuilder {
             Form form;
             Suspend suspend;
             Suspended suspended;
-
 
             DocDescription docDescription = findAnnotation(annotations, DocDescription.class);
             parameter.description = (docDescription == null) ? null : docDescription.value();
@@ -271,7 +271,6 @@ public class ResourceBuilder {
         }
 
     }
-
 
     public static class LocatorMethodParameterBuilder<T extends LocatorMethodParameterBuilder> extends ParameterBuilder<T> {
         final ResourceLocatorBuilder locator;
@@ -382,8 +381,10 @@ public class ResourceBuilder {
         public ResourceClassBuilder buildMethod() {
 
             ResteasyUriBuilder builder = new ResteasyUriBuilder();
-            if (locator.resourceClass.path != null) builder.path(locator.resourceClass.path);
-            if (locator.path != null) builder.path(locator.path);
+            if (locator.resourceClass.path != null)
+                builder.path(locator.resourceClass.path);
+            if (locator.path != null)
+                builder.path(locator.path);
             String pathExpression = builder.getPath();
             if (pathExpression == null)
                 pathExpression = "";
@@ -410,9 +411,11 @@ public class ResourceBuilder {
             return (T) this;
         }
 
-        public T response(int http, String[] headers, String[] cookies, Class<?> type, Type parameterized, DocReturn.Structure structure, String description, String typeDescription) {
+        public T response(int http, String[] headers, String[] cookies, Class<?> type, Type parameterized, DocReturn.Structure structure,
+                String description, String typeDescription) {
             ResponseObjectBuilder responseBuilder = new ResponseObjectBuilder();
-            ReturnOption option = responseBuilder.status(http).headers(Arrays.asList(headers)).cookies(Arrays.asList(cookies)).type(type).parameterized(parameterized).structure(structure).description(description).typeDescription(typeDescription).buildReturnOption();
+            ReturnOption option = responseBuilder.status(http).headers(Arrays.asList(headers)).cookies(Arrays.asList(cookies)).type(type)
+                    .parameterized(parameterized).structure(structure).description(description).typeDescription(typeDescription).buildReturnOption();
             locator.returnOptions.add(option);
             return (T) this;
         }
@@ -462,10 +465,10 @@ public class ResourceBuilder {
             return this;
         }
 
-//        public ResourceMethodBuilder produces(MediaType... produces) {
-//            method.produces = produces;
-//            return this;
-//        }
+        // public ResourceMethodBuilder produces(MediaType... produces) {
+        // method.produces = produces;
+        // return this;
+        // }
 
         public ResourceMethodBuilder produces(String... produces) {
             method.produces = produces;
@@ -486,10 +489,10 @@ public class ResourceBuilder {
             return types;
         }
 
-//        public ResourceMethodBuilder consumes(MediaType... consumes) {
-//            method.consumes = consumes;
-//            return this;
-//        }
+        // public ResourceMethodBuilder consumes(MediaType... consumes) {
+        // method.consumes = consumes;
+        // return this;
+        // }
 
         public ResourceMethodBuilder consumes(String... consumes) {
             method.consumes = consumes;
@@ -502,8 +505,10 @@ public class ResourceBuilder {
 
         public ResourceClassBuilder buildMethod() {
             ResteasyUriBuilder builder = new ResteasyUriBuilder();
-            if (method.resourceClass.path != null) builder.path(method.resourceClass.path);
-            if (method.path != null) builder.path(method.path);
+            if (method.resourceClass.path != null)
+                builder.path(method.resourceClass.path);
+            if (method.path != null)
+                builder.path(method.path);
             String pathExpression = builder.getPath();
             if (pathExpression == null)
                 pathExpression = "";
@@ -603,7 +608,6 @@ public class ResourceBuilder {
         }
     }
 
-
     public static ResourceClassBuilder rootResource(Class<?> root) {
         return new ResourceClassBuilder(root, "/");
     }
@@ -616,10 +620,9 @@ public class ResourceBuilder {
         return new ResourceClassBuilder(root, null);
     }
 
-
     /**
      * Picks a constructor from an annotated resource class based on spec rules
-     *
+     * 
      * @param annotatedResourceClass
      * @return
      */
@@ -630,14 +633,15 @@ public class ResourceBuilder {
         }
         ResourceConstructorBuilder builder = rootResource(annotatedResourceClass).constructor(constructor);
         if (constructor.getParameterTypes() != null) {
-            for (int i = 0; i < constructor.getParameterTypes().length; i++) builder.param(i).fromAnnotations();
+            for (int i = 0; i < constructor.getParameterTypes().length; i++)
+                builder.param(i).fromAnnotations();
         }
         return builder.buildConstructor().buildClass().getConstructor();
     }
 
     /**
      * Build metadata from annotations on classes and methods
-     *
+     * 
      * @return
      */
     public static ResourceClass rootResourceFromAnnotations(Class<?> clazz) {
@@ -655,13 +659,14 @@ public class ResourceBuilder {
     private static final String WELD_PROXY_INTERFACE_NAME = "org.jboss.weld.bean.proxy.ProxyObject";
 
     /**
-     * Whether the given class is a proxy created by Weld or not. This is
-     * the case if the given class implements the interface
+     * Whether the given class is a proxy created by Weld or not. This is the
+     * case if the given class implements the interface
      * {@code org.jboss.weld.bean.proxy.ProxyObject}.
-     *
-     * @param clazz the class of interest
-     * @return {@code true} if the given class is a Weld proxy,
-     * {@code false} otherwise
+     * 
+     * @param clazz
+     *            the class of interest
+     * @return {@code true} if the given class is a Weld proxy, {@code false}
+     *         otherwise
      */
     private static boolean isWeldProxy(Class<?> clazz) {
         for (Class<?> implementedInterface : clazz.getInterfaces()) {
@@ -674,7 +679,8 @@ public class ResourceBuilder {
     }
 
     private static ResourceClass fromAnnotations(boolean isLocator, Class<?> clazz) {
-        // stupid hack for Weld as it loses parameterized type information, but retains annotations.
+        // stupid hack for Weld as it loses parameterized type information, but
+        // retains annotations.
         if (!clazz.isInterface() && clazz.getSuperclass() != null && !clazz.getSuperclass().equals(Object.class) && isWeldProxy(clazz)) {
             clazz = clazz.getSuperclass();
         }
@@ -717,13 +723,17 @@ public class ResourceBuilder {
 
     private static Method findAnnotatedInterfaceMethod(Class<?> root, Class<?> iface, Method implementation) {
         for (Method method : iface.getMethods()) {
-            if (method.isSynthetic()) continue;
+            if (method.isSynthetic())
+                continue;
 
-            if (!method.getName().equals(implementation.getName())) continue;
-            if (method.getParameterTypes().length != implementation.getParameterTypes().length) continue;
+            if (!method.getName().equals(implementation.getName()))
+                continue;
+            if (method.getParameterTypes().length != implementation.getParameterTypes().length)
+                continue;
 
             Method actual = Types.getImplementingMethod(root, method);
-            if (!actual.equals(implementation)) continue;
+            if (!actual.equals(implementation))
+                continue;
 
             if (method.isAnnotationPresent(Path.class) || IsHttpMethod.getHttpMethods(method) != null)
                 return method;
@@ -742,13 +752,13 @@ public class ResourceBuilder {
         if (implementation.isAnnotationPresent(Path.class) || IsHttpMethod.getHttpMethods(implementation) != null)
             return implementation;
 
-        if (implementation.isAnnotationPresent(Produces.class)
-                || implementation.isAnnotationPresent(Consumes.class)) {
+        if (implementation.isAnnotationPresent(Produces.class) || implementation.isAnnotationPresent(Consumes.class)) {
             // completely abort this method
             return null;
         }
 
-        // Per http://download.oracle.com/auth/otn-pub/jcp/jaxrs-1.0-fr-oth-JSpec/jaxrs-1.0-final-spec.pdf
+        // Per
+        // http://download.oracle.com/auth/otn-pub/jcp/jaxrs-1.0-fr-oth-JSpec/jaxrs-1.0-final-spec.pdf
         // Section 3.2 Annotation Inheritance
 
         // Check possible superclass declarations
@@ -757,8 +767,7 @@ public class ResourceBuilder {
                 Method method = clazz.getDeclaredMethod(implementation.getName(), implementation.getParameterTypes());
                 if (method.isAnnotationPresent(Path.class) || IsHttpMethod.getHttpMethods(method) != null)
                     return method;
-                if (method.isAnnotationPresent(Produces.class)
-                        || method.isAnnotationPresent(Consumes.class)) {
+                if (method.isAnnotationPresent(Produces.class) || method.isAnnotationPresent(Consumes.class)) {
                     // completely abort this method
                     return null;
                 }
@@ -768,7 +777,8 @@ public class ResourceBuilder {
         }
 
         // Not found yet, so next check ALL interfaces from the root,
-        // but ensure no redefinition by peer interfaces (ambiguous) to preserve logic found in
+        // but ensure no redefinition by peer interfaces (ambiguous) to preserve
+        // logic found in
         // original implementation
         for (Class<?> clazz = root; clazz != null; clazz = clazz.getSuperclass()) {
             Method method = null;
@@ -790,7 +800,8 @@ public class ResourceBuilder {
         do {
             processDeclaredFields(resourceClassBuilder, root);
             root = root.getSuperclass();
-//      } while (root.getSuperclass() != null && !root.getSuperclass().equals(Object.class));
+            // } while (root.getSuperclass() != null &&
+            // !root.getSuperclass().equals(Object.class));
         } while (root != null && !root.equals(Object.class));
     }
 
@@ -807,27 +818,32 @@ public class ResourceBuilder {
             FieldParameterBuilder builder = resourceClassBuilder.field(field).fromAnnotations();
             if (builder.field.paramType == Parameter.ParamType.MESSAGE_BODY && !field.isAnnotationPresent(Body.class))
                 continue;
-            if (builder.field.paramType == Parameter.ParamType.UNKNOWN) continue;
+            if (builder.field.paramType == Parameter.ParamType.UNKNOWN)
+                continue;
             builder.buildField();
         }
     }
 
     protected static void processDeclaredSetters(ResourceClassBuilder resourceClassBuilder, Class<?> root, Set<Long> visitedHashes) {
         for (Method method : root.getDeclaredMethods()) {
-            if (!method.getName().startsWith("set")) continue;
-            if (method.getParameterTypes().length != 1) continue;
+            if (!method.getName().startsWith("set"))
+                continue;
+            if (method.getParameterTypes().length != 1)
+                continue;
             long hash = 0;
             try {
                 hash = MethodHashing.methodHash(method);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            if (!Modifier.isPrivate(method.getModifiers()) && visitedHashes.contains(hash)) continue;
+            if (!Modifier.isPrivate(method.getModifiers()) && visitedHashes.contains(hash))
+                continue;
             visitedHashes.add(hash);
             SetterParameterBuilder builder = resourceClassBuilder.setter(method).fromAnnotations();
             if (builder.setter.paramType == Parameter.ParamType.MESSAGE_BODY && !method.isAnnotationPresent(Body.class))
                 continue;
-            if (builder.setter.paramType == Parameter.ParamType.UNKNOWN) continue;
+            if (builder.setter.paramType == Parameter.ParamType.UNKNOWN)
+                continue;
             builder.buildSetter();
         }
     }
@@ -852,25 +868,36 @@ public class ResourceBuilder {
                 String pExampValue = (docPathExample == null) ? null : docPathExample.value();
                 resourceMethodBuilder.pathExample(pExampValue);
                 for (String httpMethod : httpMethods) {
-                    if (httpMethod.equalsIgnoreCase(HttpMethod.GET)) resourceMethodBuilder.get();
-                    else if (httpMethod.equalsIgnoreCase(HttpMethod.PUT)) resourceMethodBuilder.put();
-                    else if (httpMethod.equalsIgnoreCase(HttpMethod.POST)) resourceMethodBuilder.post();
-                    else if (httpMethod.equalsIgnoreCase(HttpMethod.DELETE)) resourceMethodBuilder.delete();
-                    else if (httpMethod.equalsIgnoreCase(HttpMethod.OPTIONS)) resourceMethodBuilder.options();
-                    else if (httpMethod.equalsIgnoreCase(HttpMethod.HEAD)) resourceMethodBuilder.head();
-                    else resourceMethodBuilder.httpMethod(httpMethod);
+                    if (httpMethod.equalsIgnoreCase(HttpMethod.GET))
+                        resourceMethodBuilder.get();
+                    else if (httpMethod.equalsIgnoreCase(HttpMethod.PUT))
+                        resourceMethodBuilder.put();
+                    else if (httpMethod.equalsIgnoreCase(HttpMethod.POST))
+                        resourceMethodBuilder.post();
+                    else if (httpMethod.equalsIgnoreCase(HttpMethod.DELETE))
+                        resourceMethodBuilder.delete();
+                    else if (httpMethod.equalsIgnoreCase(HttpMethod.OPTIONS))
+                        resourceMethodBuilder.options();
+                    else if (httpMethod.equalsIgnoreCase(HttpMethod.HEAD))
+                        resourceMethodBuilder.head();
+                    else
+                        resourceMethodBuilder.httpMethod(httpMethod);
                 }
                 Produces produces = method.getAnnotation(Produces.class);
                 if (produces == null)
                     produces = resourceClassBuilder.resourceClass.getClazz().getAnnotation(Produces.class);
-                if (produces == null) produces = method.getDeclaringClass().getAnnotation(Produces.class);
-                if (produces != null) resourceMethodBuilder.produces(produces.value());
+                if (produces == null)
+                    produces = method.getDeclaringClass().getAnnotation(Produces.class);
+                if (produces != null)
+                    resourceMethodBuilder.produces(produces.value());
 
                 Consumes consumes = method.getAnnotation(Consumes.class);
                 if (consumes == null)
                     consumes = resourceClassBuilder.resourceClass.getClazz().getAnnotation(Consumes.class);
-                if (consumes == null) consumes = method.getDeclaringClass().getAnnotation(Consumes.class);
-                if (consumes != null) resourceMethodBuilder.consumes(consumes.value());
+                if (consumes == null)
+                    consumes = method.getDeclaringClass().getAnnotation(Consumes.class);
+                if (consumes != null)
+                    resourceMethodBuilder.consumes(consumes.value());
                 if (method.isAnnotationPresent(DocReturn.class)) {
                     createResponse(method.getAnnotation(DocReturn.class), resourceMethodBuilder);
                 } else if (method.isAnnotationPresent(DocReturns.class)) {
@@ -899,25 +926,28 @@ public class ResourceBuilder {
         if (returnClass.getCanonicalName().equals("void")) {
             emptyResponse(resourceMethodBuilder);
         } else if (returnClass.equals(Response.class)) {
-            resourceMethodBuilder.response(200, new String[]{}, new String[]{}, Object.class, Object.class, null, null, null);
+            resourceMethodBuilder.response(200, new String[] {}, new String[] {}, Object.class, Object.class, null, null, null);
         } else if (returnClass.equals(GenericEntity.class)) {
             if (parameterized.equals(GenericEntity.class)) {
                 emptyResponse(resourceMethodBuilder);
             } else if (parameterized instanceof ParameterizedType) {
                 ParameterizedType paramType = (ParameterizedType) parameterized;
                 if (paramType.getActualTypeArguments()[0] instanceof Class) {
-                    resourceMethodBuilder.response(200, new String[]{}, new String[]{}, (Class) paramType.getActualTypeArguments()[0], paramType.getActualTypeArguments()[0], null, null, null);
+                    resourceMethodBuilder.response(200, new String[] {}, new String[] {}, (Class) paramType.getActualTypeArguments()[0],
+                            paramType.getActualTypeArguments()[0], null, null, null);
                 } else if (paramType.getActualTypeArguments()[0] instanceof ParameterizedType) {
-                    resourceMethodBuilder.response(200, new String[]{}, new String[]{}, (Class) ((ParameterizedType) paramType.getActualTypeArguments()[0]).getRawType(), paramType.getActualTypeArguments()[0], null, null, null);
+                    resourceMethodBuilder.response(200, new String[] {}, new String[] {},
+                            (Class) ((ParameterizedType) paramType.getActualTypeArguments()[0]).getRawType(), paramType.getActualTypeArguments()[0],
+                            null, null, null);
                 }
             }
         } else {
-            resourceMethodBuilder.response(200, new String[]{}, new String[]{}, returnClass, parameterized, null, null, null);
+            resourceMethodBuilder.response(200, new String[] {}, new String[] {}, returnClass, parameterized, null, null, null);
         }
     }
 
     static void emptyResponse(ResourceMethodBuilder resourceMethodBuilder) {
-        resourceMethodBuilder.response(204, new String[]{}, new String[]{}, null, null, null, null, null);
+        resourceMethodBuilder.response(204, new String[] {}, new String[] {}, null, null, null, null, null);
     }
 
     static void createResponse(DocReturn ret, ResourceMethodBuilder resourceMethodBuilder) {
@@ -925,15 +955,17 @@ public class ResourceBuilder {
         DocReturn.Structure structure = ret.structure();
         if (structure == DocReturn.Structure.OBJECT) {
             parameterizedType = ret.type();
-            resourceMethodBuilder.response(ret.http(), ret.headers(), ret.cookies(), ret.type(), ret.type(), ret.structure(), ret.description(), ret.typeDescription());
+            resourceMethodBuilder.response(ret.http(), ret.headers(), ret.cookies(), ret.type(), ret.type(), ret.structure(), ret.description(),
+                    ret.typeDescription());
         } else if (structure == DocReturn.Structure.ARRAY) {
-            parameterizedType = ParameterizedTypeImpl.make(List.class, new Type[]{ret.type()}, null);
-            resourceMethodBuilder.response(ret.http(), ret.headers(), ret.cookies(), List.class, parameterizedType, ret.structure(), ret.description(), ret.typeDescription());
+            parameterizedType = ParameterizedTypeImpl.make(List.class, new Type[] { ret.type() }, null);
+            resourceMethodBuilder.response(ret.http(), ret.headers(), ret.cookies(), List.class, parameterizedType, ret.structure(),
+                    ret.description(), ret.typeDescription());
         } else if (structure == DocReturn.Structure.MAP) {
-            parameterizedType = ParameterizedTypeImpl.make(Map.class, new Type[]{String.class, ret.type()}, null);
-            resourceMethodBuilder.response(ret.http(), ret.headers(), ret.cookies(), Map.class, parameterizedType, ret.structure(), ret.description(), ret.typeDescription());
+            parameterizedType = ParameterizedTypeImpl.make(Map.class, new Type[] { String.class, ret.type() }, null);
+            resourceMethodBuilder.response(ret.http(), ret.headers(), ret.cookies(), Map.class, parameterizedType, ret.structure(),
+                    ret.description(), ret.typeDescription());
         }
     }
-
 
 }

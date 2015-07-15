@@ -11,22 +11,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 23.12.14.
- */
-@JsonPropertyOrder({"httpStatus", "returnDescription", "headerParams", "cookieParams",
-"soapOutputHeaders", "returnTypes"})
+@JsonPropertyOrder({ "httpStatus", "returnDescription", "headerParams", "cookieParams", "soapOutputHeaders", "returnTypes" })
 public class Return {
 
     private int httpStatus;
+    
     private Map<String, HeaderParam> headerParams;
+    
     private Map<String, CookieParam> cookieParams;
+    
     private List<TransportType> returnTypes;
+    
     @JsonProperty("returnDescription")
     private String description;
+    
     private List<TransportType> soapOutputHeaders;
 
-    private Return(int httpStatus, Map<String, HeaderParam> headerParams, Map<String, CookieParam> cookieParams, List<TransportType> returnTypes, String description, List<TransportType> soapOutputHeaders) {
+    private Return(int httpStatus, Map<String, HeaderParam> headerParams, Map<String, CookieParam> cookieParams, List<TransportType> returnTypes,
+            String description, List<TransportType> soapOutputHeaders) {
         this.httpStatus = httpStatus;
         this.headerParams = headerParams;
         this.cookieParams = cookieParams;
@@ -143,7 +145,8 @@ public class Return {
         }
 
         public Return build() {
-            return new Return(httpStatus, headerParams, cookieParams, returnTypes, description, (soapOutputHeaders.isEmpty()) ? null : soapOutputHeaders);
+            return new Return(httpStatus, headerParams, cookieParams, returnTypes, description, (soapOutputHeaders.isEmpty()) ? null
+                    : soapOutputHeaders);
         }
     }
 }

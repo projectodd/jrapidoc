@@ -1,22 +1,21 @@
 package org.projectodd.jrapidoc.model.object.type;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.projectodd.jrapidoc.logger.Logger;
-import org.projectodd.jrapidoc.model.object.BeanProperty;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 18.1.15.
- */
+import org.projectodd.jrapidoc.model.object.BeanProperty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class CustomType extends org.projectodd.jrapidoc.model.object.type.Type {
 
     private Map<String, BeanProperty> attributes = new HashMap<String, BeanProperty>();
+    
     @JsonIgnore
     private Class<?> typeClass;
+    
     private List<String> enumerations = new ArrayList<String>();
 
     public CustomType(String typeName, String typeRef, Map<String, BeanProperty> attributes, Class<?> typeClass) {
@@ -25,7 +24,7 @@ public class CustomType extends org.projectodd.jrapidoc.model.object.type.Type {
         this.typeClass = typeClass;
     }
 
-    public CustomType(String typeName, String typeRef, Class<?> typeClass){
+    public CustomType(String typeName, String typeRef, Class<?> typeClass) {
         super(typeName, typeRef);
         this.typeClass = typeClass;
     }
@@ -40,10 +39,6 @@ public class CustomType extends org.projectodd.jrapidoc.model.object.type.Type {
 
     @Override
     public String toString() {
-        return "CustomType{" +
-                "attributes=" + attributes +
-                ", typeClass=" + typeClass +
-                ", enumerations=" + enumerations +
-                "} " + super.toString();
+        return "CustomType{" + "attributes=" + attributes + ", typeClass=" + typeClass + ", enumerations=" + enumerations + "} " + super.toString();
     }
 }

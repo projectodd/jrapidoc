@@ -1,10 +1,9 @@
 package org.projectodd.jrapidoc.model.handler;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 12.4.15.
- */
-public class HandlerException extends Exception{
+public class HandlerException extends Exception {
 
+    private static final long serialVersionUID = -2938082052012182765L;
+    
     Action behaviour;
 
     public HandlerException(Action behaviour) {

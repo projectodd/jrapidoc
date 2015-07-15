@@ -1,16 +1,18 @@
 package org.projectodd.jrapidoc.model.type.provider.converter;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.*;
-import org.projectodd.jrapidoc.model.ModelUtil;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 29.3.15.
- */
+import org.projectodd.jrapidoc.model.ModelUtil;
+
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.ArrayType;
+import com.fasterxml.jackson.databind.type.CollectionLikeType;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.MapLikeType;
+import com.fasterxml.jackson.databind.type.SimpleType;
+
 public class JacksonSignature {
 
     public static String createSignature(JavaType jacksonType) {

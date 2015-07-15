@@ -1,17 +1,11 @@
 package org.projectodd.jrapidoc.model.object.type;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.projectodd.jrapidoc.model.object.BeanProperty;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by Tomas "sarzwest" Jiricek on 23.12.14.
- */
 public class Type {
 
     private String typeRef;
+    
     @JsonIgnore
     private String typeName;
 
@@ -30,9 +24,6 @@ public class Type {
 
     @Override
     public String toString() {
-        return "Type{" +
-                "typeRef='" + typeRef + '\'' +
-                ", typeName='" + typeName + '\'' +
-                '}';
+        return "Type{" + "typeRef='" + typeRef + '\'' + ", typeName='" + typeName + '\'' + '}';
     }
 }

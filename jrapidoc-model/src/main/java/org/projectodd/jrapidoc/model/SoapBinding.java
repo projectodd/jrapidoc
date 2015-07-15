@@ -1,12 +1,11 @@
 package org.projectodd.jrapidoc.model;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 11.4.15.
- */
 public class SoapBinding {
 
     private String style;
+    
     private String use;
+    
     private String parameterStyle;
 
     private SoapBinding(String style, String use, String parameterStyle) {
@@ -39,7 +38,7 @@ public class SoapBinding {
         this.parameterStyle = parameterStyle;
     }
 
-    public static class SoapBindingBuilder{
+    public static class SoapBindingBuilder {
 
         private String style = "DOCUMENT";
         private String use = "LITERAL";
@@ -60,7 +59,7 @@ public class SoapBinding {
             return this;
         }
 
-        public SoapBinding build(){
+        public SoapBinding build() {
             return new SoapBinding(style, use, parameterStyle);
         }
 

@@ -9,14 +9,13 @@ import java.lang.annotation.Target;
  * Annotatation can be used on web service method<br/>
  * It is used for customizing Java return type<br/>
  * <br/>
- * Created by Tomas "sarzwest" Jiricek on 11.4.15.<br/>
  */
-@Target({ElementType.METHOD})
+@Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DocReturn {
     /**
      * http status of returned message
-     *
+     * 
      * @return
      */
     int http() default 200;
@@ -29,12 +28,14 @@ public @interface DocReturn {
 
     /**
      * Description of return option
+     * 
      * @return
      */
     String description() default "";
 
     /**
      * Description of return type
+     * 
      * @return
      */
     String typeDescription() default "";

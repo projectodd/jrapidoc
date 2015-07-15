@@ -1,23 +1,21 @@
 package org.projectodd.jrapidoc.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.projectodd.jrapidoc.logger.Logger;
-import org.projectodd.jrapidoc.model.object.type.Type;
-
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Created by Tomas "sarzwest" Jiricek on 23.12.14.
- */
-@JsonPropertyOrder({"customInfo", "serviceGroups", "types"})
+import org.projectodd.jrapidoc.logger.Logger;
+import org.projectodd.jrapidoc.model.object.type.Type;
+
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonPropertyOrder({ "customInfo", "serviceGroups", "types" })
 public class APIModel {
 
     private Map<String, String> customInfo;
+    
     private Map<String, ServiceGroup> serviceGroups;
+    
     private Map<String, Type> types;
 
     private APIModel(Map<String, ServiceGroup> serviceGroups, Map<String, Type> types, Map<String, String> customInfo) {
@@ -58,10 +56,10 @@ public class APIModel {
         public APIModelBuilder resourceGroup(ServiceGroup serviceGroup) {
             String key = serviceGroup.getBaseUrl();
             Logger.debug("Service group identifier: {0}", key);
-            if(key == null){
+            if (key == null) {
                 Logger.warn("Putting null key into map!!!");
             }
-            if(resourceGroups.containsKey(key)){
+            if (resourceGroups.containsKey(key)) {
                 Logger.warn("Resource group identifier must be unique, but resource group with identifier {0} already exists!!!", key);
             }
             this.resourceGroups.put(serviceGroup.getBaseUrl(), serviceGroup);
@@ -78,8 +76,8 @@ public class APIModel {
             return this;
         }
 
-        public APIModel build(){
-            return new APIModel(resourceGroups, types, (customInfo.isEmpty())? null: customInfo);
+        public APIModel build() {
+            return new APIModel(resourceGroups, types, (customInfo.isEmpty()) ? null : customInfo);
         }
     }
 }

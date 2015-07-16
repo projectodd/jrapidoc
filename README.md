@@ -50,6 +50,7 @@ Put code below in WAR module's `pom.xml`. For SOAP Plugin replace `rest` with `s
         </execution>
     </executions>
     <configuration>
+        <modelTarget>${project.artifactId}-${project.version}/resources</modelTarget> <!-- target/example-1.0/resources -->
         <groups>
             <group>
                 <baseUrl>http://localhost:8080/example</baseUrl>
@@ -154,10 +155,11 @@ Full configuration goes here
     </executions>
     <configuration>
         <!--optional-->
+        <modelTarget>${project.artifactId}-${project.version}/resources</modelTarget> <!-- target/jrapidoc-example-app-1.0/resources -->
         <custom>
             <appVersion>1.0</appVersion>
             <developerName>Sarzwest</developerName>
-            <hereCanBePlacedInfinityCustomProperties>Hello :-)</hereCanBePlacedInfinityCustomProperties>
+            <customPropertyPlacedToTheModel>Hello :-)</customPropertyPlacedToTheModel>
         </custom>
         <groups>
             <group>

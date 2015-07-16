@@ -35,7 +35,8 @@ import org.projectodd.jrapidoc.logger.Logger;
 @Component(role = SoapMojoAdapter.class)
 public class SoapMojoAdapter extends AbstractMojo {
 
-    public static final String MODEL_FILE_OUTPUT_PATH = "generated-sources/jrapidoc/jrapidoc.soap.model.json";
+    public static final String DEFAULT_MODEL_NAME = "jrapidoc.soap.model.json";
+    public static final String DEFAULT_MODEL_OUTPUT_PATH = "generated-sources/jrapidoc/" + DEFAULT_MODEL_NAME;
 
     @Parameter(defaultValue = "${session}", readonly = true)
     MavenSession session;
@@ -58,6 +59,12 @@ public class SoapMojoAdapter extends AbstractMojo {
      */
     @Parameter(alias = "typeProviderClass", name = "typeProviderClass", property = "typeProviderClass")
     String typeProviderClass;
+    
+    /**
+     * 
+     */
+    @Parameter(alias = "modelTarget", name = "modelTarget", property = "modelTarget")
+    String modelTarget;
 
     /**
      * List of classes implementing
@@ -106,7 +113,15 @@ public class SoapMojoAdapter extends AbstractMojo {
             }
             URL[] urls = projectClasspathList.toArray(new URL[projectClasspathList.size()]);
             SoapIntrospector soapIntrospector = new SoapIntrospector();
-            soapIntrospector.run(urls, groups, typeProviderClass, new File(target, MODEL_FILE_OUTPUT_PATH), modelHandlers, custom);
+            
+            if (modelTarget == null) {
+                modelTarget = DEFAULT_MODEL_OUTPUT_PATH;
+            } else if (!modelTarget.endsWith(".json")) {
+                modelTarget += "/" + DEFAULT_MODEL_NAME;
+            }
+            File modelOutput = new File(target, modelTarget);
+            
+            soapIntrospector.run(urls, groups, typeProviderClass, modelOutput, modelHandlers, custom);
         } catch (JrapidocFailureException e) {
             throw new MojoFailureException(e.getMessage(), e);
         } catch (JrapidocExecutionException e) {

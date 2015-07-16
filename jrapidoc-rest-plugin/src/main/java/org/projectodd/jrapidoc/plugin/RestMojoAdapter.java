@@ -34,7 +34,8 @@ import org.projectodd.jrapidoc.logger.Logger;
 @Component(role = RestMojoAdapter.class)
 public class RestMojoAdapter extends AbstractMojo {
 
-    public static final String MODEL_FILE_OUTPUT_PATH = "generated-sources/jrapidoc/jrapidoc.rest.model.json";
+    public static final String DEFAULT_MODEL_NAME = "jrapidoc.rest.model.json";
+    public static final String DEFAULT_MODEL_OUTPUT_PATH = "generated-sources/jrapidoc/" + DEFAULT_MODEL_NAME;
 
     @Parameter(defaultValue = "${session}", readonly = true)
     MavenSession session;
@@ -57,6 +58,12 @@ public class RestMojoAdapter extends AbstractMojo {
      */
     @Parameter(alias = "typeProviderClass", name = "typeProviderClass", property = "typeProviderClass")
     String typeProviderClass;
+
+    /**
+     * 
+     */
+    @Parameter(alias = "modelTarget", name = "modelTarget", property = "modelTarget")
+    String modelTarget;
 
     /**
      * List of classes implementing
@@ -84,6 +91,11 @@ public class RestMojoAdapter extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         long start = System.currentTimeMillis();
+
+        if (custom == null) {
+            custom = new HashMap<String, String>();
+        }
+
         try {
             Logger.setLogger(getLog());
             addPluginVersionToInfo();
@@ -105,7 +117,15 @@ public class RestMojoAdapter extends AbstractMojo {
             }
             URL[] urls = projectClasspathList.toArray(new URL[projectClasspathList.size()]);
             RestIntrospector restIntrospector = new RestIntrospector();
-            restIntrospector.run(urls, groups, typeProviderClass, new File(target, MODEL_FILE_OUTPUT_PATH), modelHandlers, custom);
+
+            if (modelTarget == null) {
+                modelTarget = DEFAULT_MODEL_OUTPUT_PATH;
+            } else if (!modelTarget.endsWith(".json")) {
+                modelTarget += "/" + DEFAULT_MODEL_NAME;
+            }
+            File modelOutput = new File(target, modelTarget);
+
+            restIntrospector.run(urls, groups, typeProviderClass, modelOutput, modelHandlers, custom);
         } catch (JrapidocFailureException e) {
             throw new MojoFailureException(e.getMessage(), e);
         } catch (JrapidocExecutionException e) {
@@ -116,9 +136,6 @@ public class RestMojoAdapter extends AbstractMojo {
     }
 
     void addPluginVersionToInfo() {
-        if (custom == null) {
-            custom = new HashMap<String, String>();
-        }
         PluginDescriptor pluginDesc = ((PluginDescriptor) getPluginContext().get("pluginDescriptor"));
         custom.put(pluginDesc.getArtifactId(), pluginDesc.getVersion());
     }

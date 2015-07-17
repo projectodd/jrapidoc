@@ -29,13 +29,13 @@ Listeners.prototype.loadModel = function (modelPath) {
         window.graphics.show(window.apiModel.modelJSON);
         window.graphics.closeMethodElement();
         window.graphics.createAnchorsToTypes();
-    }catch (e){
-        if(e instanceof CaughtException){
+    } catch (e) {
+        if (e instanceof CaughtException) {
             Logger.error(e.getMsg());
-        }else{
+        } else {
             Logger.error("Unexpected error during retrieving model");
         }
-    }finally{
+    } finally {
         ProgressBar.hideProgressBar();
     }
 };
@@ -63,7 +63,7 @@ Listeners.prototype.regEvents = function () {
         if (parent.hasClass('closed')) {
             parent.children(".children").slideToggle("slow");
             parent.children(".children").promise().done(
-                function(onFired){
+                function (onFired) {
                     parent.removeClass('closed');
                     parent.addClass('open');
                 }
@@ -71,7 +71,7 @@ Listeners.prototype.regEvents = function () {
         } else {
             parent.children(".children").slideToggle("slow");
             parent.children(".children").promise().done(
-                function(onFired){
+                function (onFired) {
                     parent.removeClass('open');
                     parent.addClass('closed');
                 }

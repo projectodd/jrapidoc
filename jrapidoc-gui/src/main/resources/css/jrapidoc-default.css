@@ -14,7 +14,7 @@
 }
 
 .name {
-    color: gray;
+    color: #333;
     font-family: "Open Sans", sans-serif;
 }
 
@@ -122,8 +122,8 @@ h2 {
 .services > .header > .name,
 .methods > .header > .name,
 .types > .header > .name {
-    font-weight: 300;
     text-transform: uppercase;
+    font-weight: bold;
 }
 
 .httpParameters > .children > div > .header > .name,

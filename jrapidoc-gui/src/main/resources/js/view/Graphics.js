@@ -1,5 +1,5 @@
 var Graphics = function () {
-    this.transforms;
+    this.baseUrl = null;
 };
 
 Graphics.prototype.init = function () {
@@ -46,31 +46,94 @@ Graphics.prototype.setCSSClass = function (obj) {
     return classes;
 };
 
-Graphics.prototype.transforms = {
-    'object': {'tag': 'div', 'class': function (obj) {
-        return Graphics.prototype.setCSSClass(obj)
-    }, 'children': [
-        {'tag': 'div', 'class': 'header', 'children': [
-            {'tag': 'div', 'class': function (obj) {
-                if (Graphics.prototype.getValue(obj.value) !== undefined) return('arrow hide');
-                else return('arrow');
-            }},
-            {'tag': 'span', 'class': 'name', 'html': '${name}'},
-            {'tag': 'span', 'class': 'value', 'html': function (obj) {
-                var value = Graphics.prototype.getValue(obj.value);
-                if (value !== undefined) return(" : " + Graphics.prototype.anchorLink(obj));
-                else return('');
-            }}
-        ]},
-        {'tag': 'div', 'class': 'children', 'children': function (obj) {
-            return(Graphics.prototype.children(obj.value));
-        }}
-    ]}
+Graphics.prototype.transformsParent = {
+    'object': {
+        'tag': 'div',
+        'class': function (obj) {
+            return Graphics.prototype.setCSSClass(obj)
+        },
+        'children': [
+            {
+                'tag': 'div',
+                'class': 'children',
+                'children': [
+                    {
+                        'tag': 'div',
+                        'class': 'arrow hide'
+                    },
+                    {
+                        'tag': 'span',
+                        'class': 'name',
+                        'html': ''
+                    },
+                    {
+                        'tag': 'span',
+                        'class': 'value',
+                        'html': ''
+                    }
+        ]
+            },
+            {
+                'tag': 'div',
+                'class': 'children',
+                'children': function (obj) {
+                    return (Graphics.prototype.children(obj.name, obj.value));
+                }
+            }
+    ]
+    }
+};
+
+Graphics.prototype.transformsChildren = {
+    'object': {
+        'tag': 'div',
+        'class': function (obj) {
+            return Graphics.prototype.setCSSClass(obj)
+        },
+        'children': [
+            {
+                'tag': 'div',
+                'class': 'header',
+                'children': [
+                    {
+                        'tag': 'div',
+                        'class': function (obj) {
+                            if (Graphics.prototype.getValue(obj.value) !== undefined) return ('arrow hide');
+                            else return ('arrow');
+                        }
+                    },
+                    {
+                        'tag': 'span',
+                        'class': 'name',
+                        'html': '${name}'
+                    },
+                    {
+                        'tag': 'span',
+                        'class': 'value',
+                        'html': function (obj) {
+                            var value = Graphics.prototype.getValue(obj.value);
+                            if (value !== undefined) return (" : " + Graphics.prototype.anchorLink(obj));
+                            else return ('');
+                        }
+                    }
+        ]
+            },
+            {
+                'tag': 'div',
+                'class': 'children',
+                'children': function (obj) {
+                    return (Graphics.prototype.children(obj.name, obj.value));
+                }
+            }
+    ]
+    }
 };
 
 Graphics.prototype.anchorLink = function (obj) {
     if (obj.name == Properties.keys.typeRef || obj.name == Properties.keys.includeTypeRef || obj.name == Properties.keys.keyTypeRef || obj.name == Properties.keys.valueTypeRef) {
         return "<a href='#" + obj.value + "'>" + obj.value + "</a>";
+    } else if (obj.name === "Path") {
+        return Graphics.prototype.baseUrl + "/" + obj.value;
     } else {
         return obj.value;
     }
@@ -105,21 +168,24 @@ Graphics.prototype.visualize = function (json) {
 
     $('#top').html('');
 
-    $('#top').json2html(this.convert(Properties.modelRootName, json, 'open'), this.transforms.object);
+    $('#top').json2html(this.convert(Properties.modelRootName, json, 'open'), this.transformsParent.object);
 
     window.listener.regEvents();
 };
 
-Graphics.prototype.children = function (obj) {
+Graphics.prototype.children = function (name, obj) {
     var type = $.type(obj);
-
+    
+    if (name === "Base URL") {
+        Graphics.prototype.baseUrl = obj;
+    }
+    
     //Determine if this object has children
     switch (type) {
         case 'array':
         case 'object':
-            return(json2html.transform(obj, this.transforms.object));
+            return (json2html.transform(obj, this.transformsChildren.object));
             break;
-
         default:
             //This must be a litteral
             break;
@@ -161,7 +227,12 @@ Graphics.prototype.convert = function (name, obj, show) {
             break;
     }
 
-    return( {'name': name, 'value': children, 'type': type, 'show': show} );
+    return ({
+        'name': name,
+        'value': children,
+        'type': type,
+        'show': show
+    });
 
 };
 
@@ -172,20 +243,20 @@ Graphics.prototype.getValue = function (obj) {
     switch (type) {
         case 'array':
         case 'object':
-            return(undefined);
+            return (undefined);
             break;
 
         case 'function':
             //none
-            return('function');
+            return ('function');
             break;
 
         case 'string':
-            return("'" + obj + "'");
+            return ("'" + obj + "'");
             break;
 
         default:
-            return(obj);
+            return (obj);
             break;
     }
 };

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
+
 <head>
-    <meta charset='UTF-8'/>
-    <title>JRAPIDoc</title>
+    <meta charset='UTF-8' />
+    <title>&lt;Application&gt; - Remote API Reference Documentation</title>
     <script src="js/jquery-1.7.2.min.js"></script>
     <script src="js/notify.min.js"></script>
     <script src='js/json2html.js' type='text/javascript'></script>
@@ -19,45 +20,46 @@
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
     <link href="css/prettify.css" rel="stylesheet">
-    <link href='css/layout.css' media='all' type='text/css' rel='stylesheet'/>
-    <link href='css/progress.css' media='all' type='text/css' rel='stylesheet'/>
-    <link href="css/jrapidoc-default.css" media="all" type="text/css" rel="stylesheet"/>
+    <link href='css/layout.css' media='all' type='text/css' rel='stylesheet' />
+    <link href='css/progress.css' media='all' type='text/css' rel='stylesheet' />
+    <link href="css/jrapidoc-default.css" media="all" type="text/css" rel="stylesheet" />
     <script type='text/javascript'>
-
-        var windowloaded = function () {
+        var windowloaded = function() {
             new Initializer().initialize();
         };
         window.addEventListener("load", windowloaded);
 
     </script>
 </head>
+
 <body>
-<h1 class="">Remote API reference documentation</h1>
-<section id="page">
-    <h2>Airservice Application</h2>
-    <article>
-        <div style=";margin-top:20px;">
-            <div class="align-right">
-                <label class="inline" for="modelUrl">URI: </label><input id="modelUrl" type="text" size="100"><input
-                    id="loadModel" type="button" value="Load model">
-                <input id="primaryLoad" type="button">
-                <input id="secondaryLoad" type="button">
+    <section id="page">
+        <h1>&lt;Application&gt; - Remote API Reference Documentation</h1>
+        <article>
+            <div style=";margin-top:20px;">
+                <div class="align-right">
+                    <label class="inline" for="modelUrl">URI: </label>
+                    <input id="modelUrl" type="text" size="100">
+                    <input id="loadModel" type="button" value="Load model">
+                    <input id="primaryLoad" type="button">
+                    <input id="secondaryLoad" type="button">
+                </div>
+                <div id="top"></div>
             </div>
-            <div id="top"></div>
+        </article>
+    </section>
+    <div id="progress">
+        <div id="background" class="progress-background"></div>
+        <div id="progressbar" class="progress-active">
+            <div>Loading data...</div>
+            <progress></progress>
         </div>
-    </article>
-</section>
-<div id="progress">
-    <div id="background" class="progress-background"></div>
-    <div id="progressbar" class="progress-active">
-        <div>Loading data...</div>
-        <progress></progress>
     </div>
-</div>
-<footer class="footer">
-    <span>See project home on <a href="https://github.com/projectodd/jrapidoc">GitHub</a></span> |
-    <span>JRAPIDoc is under Apache License, Version 2.0</span> |
-    <span>2015</span>
-</footer>
+    <footer class="footer">
+        <span>See project home on <a href="https://github.com/projectodd/jrapidoc">GitHub</a></span> |
+        <span>JRAPIDoc is under Apache License, Version 2.0</span> |
+        <span>2015</span>
+    </footer>
 </body>
+
 </html>

@@ -14,13 +14,13 @@ Initializer.prototype.initialize = function () {
         window.graphics.show(window.apiModel.modelJSON);
         window.graphics.closeMethodElement();
         window.graphics.createAnchorsToTypes();
-    }catch (e){
-        if(e instanceof CaughtException){
+    } catch (e) {
+        if (e instanceof CaughtException) {
             Logger.error(e.getMsg());
-        }else{
+        } else {
             Logger.error("Unexpected error occured :-(\n" + e);
         }
-    }finally{
+    } finally {
         ProgressBar.hideProgressBar();
     }
 };

@@ -26,8 +26,13 @@ import org.reflections.Reflections;
 
 public abstract class AbstractIntrospector {
 
+    public static final String DEFAULT_REST_MODEL_FILENAME = "jrapidoc.rest.model.json";
+    public static final String DEFAULT_SOAP_MODEL_FILENAME = "jrapidoc.soap.model.json";
+
     public abstract void run(URL[] urlsForClassloader, List<ConfigGroup> groups, String typeProviderClass, File output,
             List<String> modelHandlerClasses, Map<String, String> custom) throws JrapidocFailureException, JrapidocExecutionException;
+
+    protected abstract String getDefaultModelFilename();
 
     void writeModelToFile(APIModel apiModel, File output) throws JrapidocExecutionException {
         Logger.info("Writing model to file {0} started", output.getAbsolutePath());
@@ -81,12 +86,24 @@ public abstract class AbstractIntrospector {
         return HandlerFactory.createModelHandlers(modelHandlerClasses, loader);
     }
 
-    void createOutputDir(File output) throws JrapidocExecutionException {
-        if (!output.getParentFile().canWrite()) {
-            if (!output.getParentFile().mkdirs()) {
-                Logger.error("Directory {0} could not be created", output.getParentFile().getAbsolutePath());
+    /**
+     * @param modelOutputDir Output dir where model will be generated
+     * @throws JrapidocExecutionException
+     */
+    void createOutputDir(File modelOutputDir) throws JrapidocExecutionException {
+        if (!modelOutputDir.canWrite()) {
+            if (!modelOutputDir.mkdirs()) {
+                Logger.error("Directory {0} could not be created", modelOutputDir.getAbsolutePath());
                 throw new JrapidocExecutionException("Directory could not be created");
             }
+        }
+    }
+
+    File getOutputFile(File modelTarget) throws JrapidocExecutionException {
+        if (modelTarget.getName().endsWith(".json")) {
+            return modelTarget;
+        }else{
+            return new File(modelTarget, getDefaultModelFilename());
         }
     }
 
@@ -148,8 +165,8 @@ public abstract class AbstractIntrospector {
         }
     }
 
-    void setUp(List<ConfigGroup> groups, File output) throws JrapidocExecutionException {
-        createOutputDir(output);
+    void setUp(List<ConfigGroup> groups, File modelOutput) throws JrapidocExecutionException {
+        createOutputDir(modelOutput.getParentFile());
         if (groups == null) {
             Logger.error("\"groups\" element in configuration is null");
             throw new JrapidocExecutionException("\"groups\" element in configuration is null");

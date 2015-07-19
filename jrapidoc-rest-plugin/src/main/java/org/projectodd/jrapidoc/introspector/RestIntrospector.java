@@ -32,15 +32,21 @@ public class RestIntrospector extends AbstractIntrospector {
         Logger.info("");
         Logger.info("Introspection started");
         Logger.info("");
-        setUp(groups, output);
+        File modelOutput = getOutputFile(output);
+        setUp(groups, modelOutput);
         URLClassLoader loader = getProjectUrlClassLoader(urlsForClassloader);
         List<ModelHandler> modelHandlers = getModelHandlers(modelHandlerClasses, loader);
         APIModel apiModel = createModel(customInfo, groups, loader, typeProviderClass);
         processHandlers(modelHandlers, apiModel);
-        writeModelToFile(apiModel, output);
+        writeModelToFile(apiModel, modelOutput);
         Logger.info("");
         Logger.info("Introspection finished");
         Logger.info("");
+    }
+
+    @Override
+    protected String getDefaultModelFilename() {
+        return DEFAULT_REST_MODEL_FILENAME;
     }
 
     ServiceGroup createServiceGroup(String basePath, String description, Set<Class<?>> resourceClasses, ResourceClassProcessor resourceClassProcessor) {

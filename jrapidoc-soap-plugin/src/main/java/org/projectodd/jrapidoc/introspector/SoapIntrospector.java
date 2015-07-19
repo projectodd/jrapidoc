@@ -30,7 +30,8 @@ public class SoapIntrospector extends AbstractIntrospector {
         Logger.info("");
         Logger.info("Introspection started");
         Logger.info("");
-        setUp(groups, output);
+        File modelOutput = getOutputFile(output);
+        setUp(groups, modelOutput);
         URLClassLoader loader = getProjectUrlClassLoader(urlsForClassloader);
         List<ModelHandler> modelHandlers = getModelHandlers(modelHandlerClasses, loader);
         APIModel apiModel = createModel(customInfo, groups, loader, typeProviderClass);
@@ -39,6 +40,11 @@ public class SoapIntrospector extends AbstractIntrospector {
         Logger.info("");
         Logger.info("Introspection finished");
         Logger.info("");
+    }
+
+    @Override
+    protected String getDefaultModelFilename() {
+        return DEFAULT_SOAP_MODEL_FILENAME;
     }
 
     APIModel createModel(Map<String, String> customInfo, List<ConfigGroup> groups, ClassLoader loader, String typeProviderClass)

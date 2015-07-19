@@ -2,6 +2,7 @@ package org.projectodd.jrapidoc.introspector;
 
 import airservice.resources.TestResource;
 import org.projectodd.jrapidoc.RestUtil;
+import org.projectodd.jrapidoc.exception.JrapidocExecutionException;
 import org.projectodd.jrapidoc.exception.JrapidocFailureException;
 import org.projectodd.jrapidoc.model.*;
 import org.projectodd.jrapidoc.model.param.*;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.reflections.Reflections;
 
 import javax.ws.rs.Path;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -310,5 +312,27 @@ public class TestRestIntrospector {
 
         Assert.assertEquals("Description of return option", returnOption.getDescription());
         Assert.assertEquals("Description of DestinationExample type", returnOption.getReturnTypes().get(0).getDescription());
+    }
+
+    /**
+     * Simulates variable "modelTarget" representing output directory
+     * @throws JrapidocExecutionException
+     */
+    @Test
+    public void testGetOutputFile1() throws JrapidocExecutionException {
+        File outputDir = new File("testDir");
+        File outputFile = restIntrospector.getOutputFile(outputDir);
+        Assert.assertEquals(outputDir.getAbsolutePath() + "/" + restIntrospector.getDefaultModelFilename(), outputFile.getAbsolutePath());
+    }
+
+    /**
+     * Simulates variable "modelTarget" representing output file
+     * @throws JrapidocExecutionException
+     */
+    @Test
+    public void testGetOutputFile2() throws JrapidocExecutionException {
+        File outputFile = new File("testFile.json");
+        File outputFileCreated = restIntrospector.getOutputFile(outputFile);
+        Assert.assertEquals(outputFile.getAbsolutePath(), outputFileCreated.getAbsolutePath());
     }
 }

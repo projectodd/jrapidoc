@@ -64,7 +64,7 @@ Put code below in WAR module's `pom.xml`. For SOAP Plugin replace `rest` with `s
 </plugin>
 ```
 #####Getting GUI Client
-GUI Clients are distributed in archive files [in this resource](jrapidoc-gui/output)
+GUI Clients are distributed in archive files [in this resource](https://github.com/projectodd/jrapidoc/releases)
 #####Adding annotations
 Add to `pom.xml` code below
 ```xml

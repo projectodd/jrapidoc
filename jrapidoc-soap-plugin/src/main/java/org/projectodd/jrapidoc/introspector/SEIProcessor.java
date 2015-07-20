@@ -2,7 +2,7 @@ package org.projectodd.jrapidoc.introspector;
 
 import org.apache.commons.lang3.StringUtils;
 import org.projectodd.jrapidoc.annotation.DocDescription;
-import org.projectodd.jrapidoc.annotation.rest.DocIsRequired;
+import org.projectodd.jrapidoc.annotation.DocIsRequired;
 import org.projectodd.jrapidoc.annotation.soap.DocReturn;
 import org.projectodd.jrapidoc.annotation.soap.DocReturns;
 import org.projectodd.jrapidoc.exception.JrapidocExecutionException;

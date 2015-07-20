@@ -1,4 +1,4 @@
-package org.projectodd.jrapidoc.annotation.rest;
+package org.projectodd.jrapidoc.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

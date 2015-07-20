@@ -9,7 +9,7 @@ import airservice.entity.bean.ValueOfBean;
 import airservice.entity.destination.*;
 import airservice.exception.MyException;
 import org.projectodd.jrapidoc.annotation.DocDescription;
-import org.projectodd.jrapidoc.annotation.rest.DocIsRequired;
+import org.projectodd.jrapidoc.annotation.DocIsRequired;
 import org.projectodd.jrapidoc.annotation.rest.DocPathExample;
 import org.projectodd.jrapidoc.annotation.rest.DocReturn;
 import org.projectodd.jrapidoc.annotation.rest.DocReturns;

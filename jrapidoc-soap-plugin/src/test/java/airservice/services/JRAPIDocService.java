@@ -3,7 +3,7 @@ package airservice.services;
 import airservice.entity.destination.Destination;
 import airservice.exception.AirserviceFault;
 import org.projectodd.jrapidoc.annotation.DocDescription;
-import org.projectodd.jrapidoc.annotation.rest.DocIsRequired;
+import org.projectodd.jrapidoc.annotation.DocIsRequired;
 import org.projectodd.jrapidoc.annotation.soap.DocReturn;
 import org.projectodd.jrapidoc.annotation.soap.DocReturns;
 

@@ -1,293 +1,296 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.projectodd.jrapidoc</groupId>
-  <artifactId>jrapidoc-pom</artifactId>
-  <version>0.6.0-SNAPSHOT</version>
+    <groupId>org.projectodd.jrapidoc</groupId>
+    <artifactId>jrapidoc-pom</artifactId>
+    <version>0.6.0-SNAPSHOT</version>
+    <!--
+    mvn clean install -Prelease
+    makes a release
+    -->
+    <packaging>pom</packaging>
 
-  <packaging>pom</packaging>
-
-  <name>JRAPIDoc</name>
-  <description>
-    Remote API Doc Generator for JavaEE Applications using JAX-RS and JAX-WS.
-  </description>
-  <url>https://github.com/projectodd/jrapidoc</url>
-
-  <licenses>
-    <license>
-      <name>Apache License Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
+    <name>JRAPIDoc</name>
+    <description>
+        Remote API Doc Generator for JavaEE Applications using JAX-RS and JAX-WS.
+    </description>
     <url>https://github.com/projectodd/jrapidoc</url>
-    <connection>scm:git:git@github.com:projectodd/jrapidoc.git</connection>
-    <developerConnection>scm:git:git@github.com:projectodd/jrapidoc.git</developerConnection>
-  </scm>
 
-  <developers>
-    <developer>
-      <id>sarzwest</id>
-      <name>Tomas Jiricek</name>
-    </developer>
-    <developer>
-      <id>ibek</id>
-      <name>Ivo Bek</name>
-    </developer>
-    <developer>
-      <id>mrietveld</id>
-      <name>Marco Rietveld</name>
-    </developer>
-  </developers>
+    <licenses>
+        <license>
+            <name>Apache License Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <org.projectodd.jrapidoc.version>0.6.0-SNAPSHOT</org.projectodd.jrapidoc.version>
-    <com.fasterxml.jackson.version>2.5.0</com.fasterxml.jackson.version>
-  </properties>
+    <scm>
+        <url>https://github.com/projectodd/jrapidoc</url>
+        <connection>scm:git:git@github.com:projectodd/jrapidoc.git</connection>
+        <developerConnection>scm:git:git@github.com:projectodd/jrapidoc.git</developerConnection>
+    </scm>
 
-  <modules>
-    <module>jrapidoc-rest-plugin</module>
-    <module>jrapidoc-soap-plugin</module>
-    <module>jrapidoc-annotation</module>
-    <module>jrapidoc-gui</module>
-    <module>jrapidoc-model</module>
-    <module>jrapidoc-common</module>
-    <module>jrapidoc-plugin-base</module>
-  </modules>
+    <developers>
+        <developer>
+            <id>sarzwest</id>
+            <name>Tomas Jiricek</name>
+        </developer>
+        <developer>
+            <id>ibek</id>
+            <name>Ivo Bek</name>
+        </developer>
+        <developer>
+            <id>mrietveld</id>
+            <name>Marco Rietveld</name>
+        </developer>
+    </developers>
 
-  <dependencyManagement>
-    <dependencies>
-      <!--JRAPIDoc BEGIN -->
-      <dependency>
-        <groupId>org.projectodd.jrapidoc</groupId>
-        <artifactId>jrapidoc-plugin-base</artifactId>
-        <version>${org.projectodd.jrapidoc.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.projectodd.jrapidoc</groupId>
-        <artifactId>jrapidoc-model</artifactId>
-        <version>${org.projectodd.jrapidoc.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.projectodd.jrapidoc</groupId>
-        <artifactId>jrapidoc-annotation</artifactId>
-        <version>${org.projectodd.jrapidoc.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.projectodd.jrapidoc</groupId>
-        <artifactId>jrapidoc-common</artifactId>
-        <version>${org.projectodd.jrapidoc.version}</version>
-      </dependency>
-      <!--JRAPIDoc END -->
-      <!--StringUtils BEGIN -->
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>3.3.2</version>
-      </dependency>
-      <!--StringUtils END -->
-      <dependency>
-        <groupId>org.apache.maven.plugin-tools</groupId>
-        <artifactId>maven-plugin-annotations</artifactId>
-        <version>3.4</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven-plugin-api</artifactId>
-        <version>3.3.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.maven</groupId>
-        <artifactId>maven-core</artifactId>
-        <version>3.3.1</version>
-      </dependency>
-      <!--Jackson fasterxml BEGIN -->
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>${com.fasterxml.jackson.version}</version>
-      </dependency>
-      <dependency>
-        <!-- Note: core-annotations version x.y.0 is generally compatible 
-          with (identical to) version x.y.1, x.y.2, etc. -->
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-        <version>${com.fasterxml.jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${com.fasterxml.jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.module</groupId>
-        <artifactId>jackson-module-jaxb-annotations</artifactId>
-        <version>${com.fasterxml.jackson.version}</version>
-      </dependency>
-      <!--Jackson fasterxml END -->
-      <!--Reflections BEGIN -->
-      <dependency>
-        <groupId>org.reflections</groupId>
-        <artifactId>reflections-maven</artifactId>
-        <version>0.9.9-RC2</version>
-      </dependency>
-      <!--Reflections END -->
-      <!--JUnit BEGIN -->
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.11</version>
-        <scope>test</scope>
-      </dependency>
-      <!--JUnit END -->
-    </dependencies>
-  </dependencyManagement>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <org.projectodd.jrapidoc.version>0.6.0-SNAPSHOT</org.projectodd.jrapidoc.version>
+        <com.fasterxml.jackson.version>2.5.0</com.fasterxml.jackson.version>
+    </properties>
 
-  <profiles>
-    <profile>
-      <id>release</id>
-      <build>
+    <modules>
+        <module>jrapidoc-rest-plugin</module>
+        <module>jrapidoc-soap-plugin</module>
+        <module>jrapidoc-annotation</module>
+        <module>jrapidoc-gui</module>
+        <module>jrapidoc-model</module>
+        <module>jrapidoc-common</module>
+        <module>jrapidoc-plugin-base</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--JRAPIDoc BEGIN -->
+            <dependency>
+                <groupId>org.projectodd.jrapidoc</groupId>
+                <artifactId>jrapidoc-plugin-base</artifactId>
+                <version>${org.projectodd.jrapidoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectodd.jrapidoc</groupId>
+                <artifactId>jrapidoc-model</artifactId>
+                <version>${org.projectodd.jrapidoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectodd.jrapidoc</groupId>
+                <artifactId>jrapidoc-annotation</artifactId>
+                <version>${org.projectodd.jrapidoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectodd.jrapidoc</groupId>
+                <artifactId>jrapidoc-common</artifactId>
+                <version>${org.projectodd.jrapidoc.version}</version>
+            </dependency>
+            <!--JRAPIDoc END -->
+            <!--StringUtils BEGIN -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.3.2</version>
+            </dependency>
+            <!--StringUtils END -->
+            <dependency>
+                <groupId>org.apache.maven.plugin-tools</groupId>
+                <artifactId>maven-plugin-annotations</artifactId>
+                <version>3.4</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>3.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-core</artifactId>
+                <version>3.3.1</version>
+            </dependency>
+            <!--Jackson fasterxml BEGIN -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${com.fasterxml.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <!-- Note: core-annotations version x.y.0 is generally compatible
+                  with (identical to) version x.y.1, x.y.2, etc. -->
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${com.fasterxml.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${com.fasterxml.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-jaxb-annotations</artifactId>
+                <version>${com.fasterxml.jackson.version}</version>
+            </dependency>
+            <!--Jackson fasterxml END -->
+            <!--Reflections BEGIN -->
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections-maven</artifactId>
+                <version>0.9.9-RC2</version>
+            </dependency>
+            <!--Reflections END -->
+            <!--JUnit BEGIN -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+                <scope>test</scope>
+            </dependency>
+            <!--JUnit END -->
+        </dependencies>
+    </dependencyManagement>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <additionalparam>${javadoc.opts}</additionalparam>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>java8-disable-doclint</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <properties>
+                <javadoc.opts>-Xdoclint:none</javadoc.opts>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <configuration>
+                        <source>1.6</source>
+                        <target>1.6</target>
+                        <debug>true</debug>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>3.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.18.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.4</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.6</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.5.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-                <configuration>
-                  <additionalparam>${javadoc.opts}</additionalparam>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-          </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
         </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>java8-disable-doclint</id>
-      <activation>
-        <jdk>[1.8,)</jdk>
-      </activation>
-      <properties>
-        <javadoc.opts>-Xdoclint:none</javadoc.opts>
-      </properties>
-    </profile>
-  </profiles>
+    </build>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.1</version>
-          <configuration>
-            <source>1.6</source>
-            <target>1.6</target>
-            <debug>true</debug>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.4</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.18.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>2.4</version>
-          <executions>
-            <execution>
-              <id>attach-sources</id>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.9.1</version>
-          <executions>
-            <execution>
-              <id>attach-javadocs</id>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.6</version>
-          <executions>
-            <execution>
-              <id>sign-artifacts</id>
-              <phase>verify</phase>
-              <goals>
-                <goal>sign</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.5.3</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.7</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
-
-  <distributionManagement>
-    <repository>
-      <id>jboss.staging</id>
-      <url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2</url>
-    </repository>
-  </distributionManagement>
+    <distributionManagement>
+        <repository>
+            <id>jboss.staging</id>
+            <url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
 
 </project>

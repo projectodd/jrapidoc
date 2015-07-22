@@ -40,7 +40,7 @@ Put code below in WAR module's `pom.xml`. For SOAP Plugin replace `rest` with `s
 <plugin>
     <groupId>org.projectodd.jrapidoc</groupId>
     <artifactId>jrapidoc-rest-plugin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.5.0-SNAPSHOT</version>
     <executions>
         <execution>
             <id>run</id>
@@ -71,7 +71,7 @@ Add to `pom.xml` code below
 <dependency>
     <groupId>org.projectodd.jrapidoc</groupId>
     <artifactId>jrapidoc-annotation</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.5.0-SNAPSHOT</version>
 </dependency>
 ```
 #####Annotate your API

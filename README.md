@@ -39,6 +39,7 @@ It is recommended to put the plugin below into your WAR module's `pom.xml`. Simi
 The API model is generated to the `modelTarget` location during the *process-classes* lifecycle phase.
 
 Process of generating API documentation composes of these consecutive steps:
+
 1. Introspection of remote API.
 2. Creation of remote API model.
 3. Serializing API model into JSON-format file.

@@ -6,7 +6,7 @@
 
   <groupId>org.projectodd.jrapidoc</groupId>
   <artifactId>jrapidoc-pom</artifactId>
-  <version>0.5.0.Final</version>
+  <version>0.6.0-SNAPSHOT</version>
 
   <packaging>pom</packaging>
 
@@ -47,7 +47,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <org.projectodd.jrapidoc.version>0.5.0.Final</org.projectodd.jrapidoc.version>
+    <org.projectodd.jrapidoc.version>0.6.0-SNAPSHOT</org.projectodd.jrapidoc.version>
     <com.fasterxml.jackson.version>2.5.0</com.fasterxml.jackson.version>
   </properties>
 

@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.projectodd.jrapidoc</groupId>
         <artifactId>jrapidoc-pom</artifactId>
-        <version>0.5.0.Final</version>
+        <version>0.6.0-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
 

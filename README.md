@@ -1,4 +1,6 @@
 # JRAPIDoc
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.projectodd.jrapidoc/jrapidoc-pom/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.projectodd.jrapidoc/jrapidoc-pom)
+
 ##### Remote API Reference Generator for JEE Applications
 JRAPIDoc tool focuses on analyzing and documenting your remote API, based on JAX-RS 2.0 and JAX-WS 2.0. Yours project API documentation can be generated automatically during build process and will be always up to date. No changes to your source code are required, but can be optionally added JRAPIDoc annotations into your API for more specific and better documentation.
 
@@ -40,7 +42,7 @@ Put code below in WAR module's `pom.xml`. For SOAP Plugin replace `rest` with `s
 <plugin>
     <groupId>org.projectodd.jrapidoc</groupId>
     <artifactId>jrapidoc-rest-plugin</artifactId>
-    <version>0.5.0-SNAPSHOT</version>
+    <version>0.5.0.Final</version>
     <executions>
         <execution>
             <id>run</id>
@@ -71,7 +73,7 @@ Add to `pom.xml` code below
 <dependency>
     <groupId>org.projectodd.jrapidoc</groupId>
     <artifactId>jrapidoc-annotation</artifactId>
-    <version>0.5.0-SNAPSHOT</version>
+    <version>0.5.0.Final</version>
 </dependency>
 ```
 #####Annotate your API

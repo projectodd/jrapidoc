@@ -24,6 +24,8 @@ import org.projectodd.jrapidoc.plugin.ConfigGroup;
 
 public class SoapIntrospector extends AbstractIntrospector {
 
+    public static final String DEFAULT_SOAP_MODEL_FILENAME = "jrapidoc.soap.model.json";
+
     @Override
     public void run(URL[] urlsForClassloader, List<ConfigGroup> groups, String typeProviderClass, File output, List<String> modelHandlerClasses,
             Map<String, String> customInfo) throws JrapidocExecutionException, JrapidocFailureException {

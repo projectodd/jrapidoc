@@ -26,6 +26,8 @@ import org.projectodd.jrapidoc.plugin.ConfigGroup;
 
 public class RestIntrospector extends AbstractIntrospector {
 
+    public static final String DEFAULT_REST_MODEL_FILENAME = "jrapidoc.rest.model.json";
+
     @Override
     public void run(URL[] urlsForClassloader, List<ConfigGroup> groups, String typeProviderClass, File output, List<String> modelHandlerClasses,
             Map<String, String> customInfo) throws JrapidocExecutionException, JrapidocFailureException {

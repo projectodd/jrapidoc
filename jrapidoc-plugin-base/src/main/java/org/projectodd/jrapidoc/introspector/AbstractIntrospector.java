@@ -26,9 +26,6 @@ import org.reflections.Reflections;
 
 public abstract class AbstractIntrospector {
 
-    public static final String DEFAULT_REST_MODEL_FILENAME = "jrapidoc.rest.model.json";
-    public static final String DEFAULT_SOAP_MODEL_FILENAME = "jrapidoc.soap.model.json";
-
     public abstract void run(URL[] urlsForClassloader, List<ConfigGroup> groups, String typeProviderClass, File output,
             List<String> modelHandlerClasses, Map<String, String> custom) throws JrapidocFailureException, JrapidocExecutionException;
 

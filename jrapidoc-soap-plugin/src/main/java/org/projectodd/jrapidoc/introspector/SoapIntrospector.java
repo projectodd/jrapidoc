@@ -75,7 +75,9 @@ public class SoapIntrospector extends AbstractIntrospector {
         ServiceGroup.ServiceGroupBuilder serviceGroupBuilder = new ServiceGroup.ServiceGroupBuilder();
         serviceGroupBuilder.baseUrl(basePath);
         serviceGroupBuilder.description(description);
-        return seiProcessor.createServiceGroup(resourceClasses, serviceGroupBuilder);
+        ServiceGroup serviceGroupSei = seiProcessor.createServiceGroup(resourceClasses, serviceGroupBuilder);
+//todo merge service groups from sei and wsprovider
+        return
     }
 
     void addServiceGroups(List<ConfigGroup> groups, SEIProcessor seiProcessor, ClassLoader loader, APIModel.APIModelBuilder APIModelBuilder)

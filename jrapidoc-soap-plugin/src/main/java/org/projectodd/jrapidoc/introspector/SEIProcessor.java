@@ -24,13 +24,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public class SEIProcessor {
+public class SEIProcessor extends AbstractWSIntrospector{
 
-    TypeProvider typeProvider;
     ClassLoader loader;
 
     public SEIProcessor(TypeProvider typeProvider, ClassLoader loader) {
-        this.typeProvider = typeProvider;
+        super(typeProvider);
         this.loader = loader;
     }
 
@@ -78,15 +77,6 @@ public class SEIProcessor {
                     resourceBuilder.method(createMethod(method, seiClass));
                 }
             }
-        }
-    }
-
-    String getDescription(Annotation[] annotations) {
-        DocDescription docDescription = getAnnotation(annotations, DocDescription.class);
-        if (docDescription == null) {
-            return null;
-        } else {
-            return docDescription.value();
         }
     }
 
@@ -157,7 +147,7 @@ public class SEIProcessor {
 
     /**
      * Used for non exception return option
-     * 
+     *
      * @param method
      * @param returnBuilder
      */

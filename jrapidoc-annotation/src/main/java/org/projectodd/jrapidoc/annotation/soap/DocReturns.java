@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DocReturns {
-    DocReturn[] value();// todo upravit javadoc u anotaci
+    DocReturn[] value();
 }

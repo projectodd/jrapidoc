@@ -83,7 +83,8 @@ public class SEIProcessor extends AbstractWSIntrospector{
     org.projectodd.jrapidoc.model.Method createMethod(Method method, Class<?> seiClass) {
         Logger.debug("{0} method processing started", method.toString());
         org.projectodd.jrapidoc.model.Method.MethodBuilder methodBuilder = new org.projectodd.jrapidoc.model.Method.MethodBuilder();
-        methodBuilder.description(getDescription(method.getDeclaredAnnotations())).isAsynchronous(true);
+        methodBuilder.description(getDescription(method.getDeclaredAnnotations()));
+        methodBuilder.isAsynchronous(true);
         addOperationName(method, methodBuilder);
         addInputHeaders(method, methodBuilder);
         addInputParams(method, methodBuilder);

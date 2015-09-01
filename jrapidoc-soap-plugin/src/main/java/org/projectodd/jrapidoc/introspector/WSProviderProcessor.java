@@ -46,10 +46,21 @@ public class WSProviderProcessor extends AbstractWSIntrospector{
         for (Method method : providerClass.getDeclaredMethods()) {
             if (Modifier.isPublic(method.getModifiers())) {
                 if(method.getName().equals("invoke")){
-                    resourceBuilder.method();
+                    resourceBuilder.method(createMethod(method));
                     break;
                 }
             }
         }
+    }
+
+    org.projectodd.jrapidoc.model.Method createMethod(Method method){
+        Logger.debug("{0} method processing started", method.toString());
+        org.projectodd.jrapidoc.model.Method.MethodBuilder methodBuilder = new org.projectodd.jrapidoc.model.Method.MethodBuilder();
+        methodBuilder.description(getDescription(method.getDeclaredAnnotations()));
+        methodBuilder.isAsynchronous(true);
+
+        org.projectodd.jrapidoc.model.Method jrdMethod = methodBuilder.build();
+        Logger.debug("{0} method processing finished", method.toString());
+        return jrdMethod;
     }
 }

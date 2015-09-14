@@ -5,6 +5,7 @@ import org.projectodd.jrapidoc.model.Service;
 import org.projectodd.jrapidoc.model.type.provider.TypeProvider;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
 
 public abstract class AbstractWSIntrospector {
     TypeProvider typeProvider;
@@ -19,6 +20,10 @@ public abstract class AbstractWSIntrospector {
         resourceBuilder.description(getDescription(clazz.getDeclaredAnnotations()));
         addMethods(clazz, resourceBuilder);
         return resourceBuilder.build();
+    }
+
+    org.projectodd.jrapidoc.model.object.type.Type createType(Type param) {
+        return typeProvider.createType(param);
     }
 
     <T extends Annotation> T getAnnotation(Annotation[] annotations, Class<T> annotation) {

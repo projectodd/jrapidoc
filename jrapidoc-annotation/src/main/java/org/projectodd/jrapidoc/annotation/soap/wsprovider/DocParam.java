@@ -11,7 +11,7 @@ public @interface DocParam {
 
     boolean isHeader() default false;
 
-    boolean isRrequired() default false;
+    boolean isRequired() default false;
 
     Class<?> type();
 

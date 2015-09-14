@@ -36,6 +36,9 @@ public class SEIProcessor extends AbstractWSIntrospector{
     public ServiceGroup createServiceGroup(Set<Class<?>> seiClasses, ServiceGroup.ServiceGroupBuilder serviceGroupBuilder)
             throws JrapidocExecutionException {
         for (Class<?> seiClass : seiClasses) {
+            if(!seiClass.isAnnotationPresent(WebService.class)){
+                continue;
+            }
             Logger.info("{0} processing started", seiClass.getCanonicalName());
             seiClass = getSEI(seiClass);
             Service service = createEndpoint(seiClass);
@@ -170,10 +173,6 @@ public class SEIProcessor extends AbstractWSIntrospector{
             }
         }
         return returnAnno;
-    }
-
-    org.projectodd.jrapidoc.model.object.type.Type createType(Type param) {
-        return typeProvider.createType(param);
     }
 
     <T extends Annotation> T getAnnotation(Annotation[] annotations, Class<T> annotation) {

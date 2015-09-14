@@ -1,6 +1,7 @@
 package org.projectodd.jrapidoc.introspector;
 
 import airservice.services.TestService;
+import org.projectodd.jrapidoc.annotation.soap.wsprovider.DocSOAPBinding;
 import org.projectodd.jrapidoc.exception.JrapidocExecutionException;
 import org.projectodd.jrapidoc.exception.JrapidocFailureException;
 import org.projectodd.jrapidoc.model.*;
@@ -171,5 +172,31 @@ public class TestSoapIntrospector {
         Assert.assertEquals("Description of input output object", outSoapHeader.getDescription());
         Assert.assertEquals(true, inSoapHeader.getIsRequired());
         Assert.assertEquals(null, outSoapHeader.getIsRequired());
+    }
+
+    @Test
+    public void testWsProviderDescription(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleWebServiceProviderService");
+        Method method = service.getMethods().get("invoke");
+        Assert.assertEquals("WebServiceProvider description", service.getDescription());
+        Assert.assertEquals("Operation description", method.getDescription());
+    }
+
+    @Test
+    public void testWsProviderSoapBindingOnMethod(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleWebServiceProviderService");
+        Method method = service.getMethods().get("invoke");
+        Assert.assertEquals("WRAPPED", method.getSoapBinding().getParameterStyle());
+        Assert.assertEquals("DOCUMENT", method.getSoapBinding().getStyle());
+        Assert.assertEquals("ENCODED", method.getSoapBinding().getUse());
+    }
+
+    @Test
+    public void testWsProviderSoapBindingOnClass(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleClientService");
+        Method method = service.getMethods().get("invoke");
+        Assert.assertEquals("BARE", method.getSoapBinding().getParameterStyle());
+        Assert.assertEquals("RPC", method.getSoapBinding().getStyle());
+        Assert.assertEquals("ENCODED", method.getSoapBinding().getUse());
     }
 }

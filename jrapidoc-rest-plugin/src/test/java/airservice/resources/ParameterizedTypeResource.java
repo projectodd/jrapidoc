@@ -9,9 +9,6 @@ import javax.ws.rs.Path;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by papa on 25.4.15.
- */
 @Path("type")
 public class ParameterizedTypeResource {
 

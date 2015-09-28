@@ -1,8 +1,5 @@
 package airservice.entity.destination;
 
-/**
- * Created by papa on 23.4.15.
- */
 public class DestinationExample {
 
     @com.fasterxml.jackson.annotation.JsonIgnore

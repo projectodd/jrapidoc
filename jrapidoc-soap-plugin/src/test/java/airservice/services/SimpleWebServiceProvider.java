@@ -16,9 +16,6 @@ import javax.xml.ws.Service;
 import javax.xml.ws.ServiceMode;
 import javax.xml.ws.WebServiceProvider;
 
-/**
- * Created by papa on 15.7.15.
- */
 @DocDescription("WebServiceProvider description")
 @WebServiceProvider
 @ServiceMode(value = Service.Mode.MESSAGE)

@@ -22,9 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by papa on 1.5.15.
- */
 public class TestSoapIntrospector {
 
     public static final String DEFAULT_GROUP = "http://localhost:9080/airservice/soap";

@@ -1,21 +1,21 @@
 package org.projectodd.jrapidoc.model.type.provider;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.TypeVariable;
-import java.util.Map;
-
-import org.projectodd.jrapidoc.model.object.type.Type;
-import org.projectodd.jrapidoc.model.type.provider.converter.JacksonToJrapidocProcessor;
-
-import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
-
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.projectodd.jrapidoc.model.object.type.Type;
+import org.projectodd.jrapidoc.model.type.provider.converter.JacksonToJrapidocProcessor;
+import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class JacksonJsonProvider extends TypeProvider {
 
     protected ObjectMapper objectMapper;
-    
+
     protected JacksonToJrapidocProcessor processor;
 
     public JacksonJsonProvider() {
@@ -41,7 +41,11 @@ public class JacksonJsonProvider extends TypeProvider {
             if (((Class) genericType).isArray()) {
                 javaType = objectMapper.getTypeFactory().constructArrayType(((Class) genericType).getComponentType());
             } else {
-                javaType = objectMapper.getTypeFactory().constructParametrizedType((Class) genericType, (Class) genericType, new Class[] {});
+                List<Class<?>> parameterClasses = new ArrayList<Class<?>>();
+                for (TypeVariable typeVariable : ((Class<?>) genericType).getTypeParameters()) {
+                    parameterClasses.add(resolveBound((Class<?>) genericType, typeVariable));
+                }
+                javaType = objectMapper.getTypeFactory().constructParametrizedType((Class) genericType, (Class) genericType, parameterClasses.toArray(new Class<?>[0]));
             }
         } else if (genericType instanceof ParameterizedType) {
             ParameterizedType paramType = (ParameterizedType) genericType;
@@ -63,5 +67,19 @@ public class JacksonJsonProvider extends TypeProvider {
             javaType = createJavaType(bound);
         }
         return javaType;
+    }
+
+    protected static Class<?> resolveBound(Class<?> type, TypeVariable typeVariable) {
+        java.lang.reflect.Type bound = typeVariable.getBounds()[0];
+        if (bound instanceof Class) {
+            return (Class<?>) typeVariable.getBounds()[0];
+        } else if (bound instanceof TypeVariable) {
+            for (java.lang.reflect.Type ancestor : type.getTypeParameters()) {
+                if (ancestor.equals(bound)) {
+                    return resolveBound(type, (TypeVariable)bound);
+                }
+            }
+        }
+        throw new IllegalStateException("Not yet implemented");
     }
 }

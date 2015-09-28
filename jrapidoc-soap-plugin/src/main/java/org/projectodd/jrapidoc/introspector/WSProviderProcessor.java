@@ -67,9 +67,26 @@ public class WSProviderProcessor extends AbstractWSIntrospector{
         methodBuilder.name(method.getName());
         addSoapBinding(method, providerClass, methodBuilder);
         addInputHeaders(method, methodBuilder);
+        addInputParams(method, methodBuilder);
         org.projectodd.jrapidoc.model.Method jrdMethod = methodBuilder.build();
         Logger.debug("{0} method processing finished", method.toString());
         return jrdMethod;
+    }
+
+    void addInputParams(Method method, org.projectodd.jrapidoc.model.Method.MethodBuilder methodBuilder){
+        DocParams paramsAnno = method.getAnnotation(DocParams.class);
+        DocParam paramAnno = method.getAnnotation(DocParam.class);
+        if(paramsAnno != null){
+            for (DocParam paramItem:paramsAnno.value()){
+                if (!paramItem.isHeader()){
+                    addInputParam(paramItem, methodBuilder);
+                }
+            }
+        }else if(paramAnno != null){
+            if (!paramAnno.isHeader()){
+                addInputParam(paramAnno, methodBuilder);
+            }
+        }
     }
 
     void addSoapBinding(Method method, Class<?> seiClass, org.projectodd.jrapidoc.model.Method.MethodBuilder methodBuilder) {
@@ -102,10 +119,20 @@ public class WSProviderProcessor extends AbstractWSIntrospector{
     }
 
     void addInputHeader(DocParam docParam, org.projectodd.jrapidoc.model.Method.MethodBuilder methodBuilder){
+        TransportType transportType = createTransportType(docParam);
+        methodBuilder.soapInputHeader(transportType);
+    }
+
+    void addInputParam(DocParam docParam, org.projectodd.jrapidoc.model.Method.MethodBuilder methodBuilder){
+        TransportType transportType = createTransportType(docParam);
+        methodBuilder.parameter(transportType);
+    }
+
+    private TransportType createTransportType(DocParam docParam) {
         TransportType.TransportTypeBuilder transportTypeBuilder = new TransportType.TransportTypeBuilder();
         transportTypeBuilder.description(docParam.description());
         transportTypeBuilder.isRequired(docParam.isRequired());
         transportTypeBuilder.type(createType(docParam.type()));
-        methodBuilder.soapInputHeader(transportTypeBuilder.build());
+        return transportTypeBuilder.build();
     }
 }

@@ -1,10 +1,15 @@
 package org.projectodd.jrapidoc.introspector;
 
+import airservice.entity.destination.D1;
+import airservice.entity.destination.DestOutChild;
+import airservice.entity.destination.Destination;
+import airservice.entity.destination.DestinationEntity;
 import airservice.services.TestService;
 import org.projectodd.jrapidoc.annotation.soap.wsprovider.DocSOAPBinding;
 import org.projectodd.jrapidoc.exception.JrapidocExecutionException;
 import org.projectodd.jrapidoc.exception.JrapidocFailureException;
 import org.projectodd.jrapidoc.model.*;
+import org.projectodd.jrapidoc.model.object.type.CustomType;
 import org.projectodd.jrapidoc.plugin.ConfigGroup;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -198,5 +203,31 @@ public class TestSoapIntrospector {
         Assert.assertEquals("BARE", method.getSoapBinding().getParameterStyle());
         Assert.assertEquals("RPC", method.getSoapBinding().getStyle());
         Assert.assertEquals("ENCODED", method.getSoapBinding().getUse());
+    }
+
+    @Test
+    public void testWsProviderInputHeaders(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleWebServiceProviderService");
+        Method method = service.getMethods().get("invoke");
+        List<TransportType> soapInputHeaders = method.getSoapInputHeaders();
+        Assert.assertEquals(1, soapInputHeaders.size());
+        TransportType transportType = soapInputHeaders.get(0);
+        Assert.assertEquals("Destination object description", transportType.getDescription());
+        Assert.assertEquals(Destination.class, ((CustomType)transportType.getType()).getTypeClass());
+        Assert.assertEquals(true, transportType.getIsRequired());
+    }
+
+    @Test
+    public void testWsProviderInputParams(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleWebServiceProviderService");
+        Method method = service.getMethods().get("invoke");
+        List<TransportType> soapInputParams = method.getParameters();
+        Assert.assertEquals(1, soapInputParams.size());
+        TransportType transportType = soapInputParams.get(0);
+        Assert.assertEquals("D1 object description", transportType.getDescription());
+        Assert.assertEquals(D1.class, ((CustomType)transportType.getType()).getTypeClass());
+        Assert.assertEquals(Destination.class, ((CustomType) transportType.getType()).getAttributes().get("object").getType());
+        Assert.assertEquals(Destination.class, ((CustomType) transportType.getType()).getAttributes().get("destination").getType());
+        Assert.assertEquals(false, transportType.getIsRequired());
     }
 }

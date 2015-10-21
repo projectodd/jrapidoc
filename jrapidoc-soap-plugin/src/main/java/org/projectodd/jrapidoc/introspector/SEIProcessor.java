@@ -141,7 +141,7 @@ public class SEIProcessor extends AbstractWSIntrospector{
             addOutputParams(method, returnBuilder);
             HeaderParam headerParam = new HeaderParam.HeaderParamBuilder().setName(HeaderParam.CONTENT_TYPE)
                     .setOptions(new String[] { "application/xml" }).setRequired(true).build();
-            returnBuilder.httpStatus(200).headerParams(Arrays.asList(headerParam));
+            returnBuilder.httpStatus(DocReturn.HTTP_STATUS_DEFAULT).headerParams(Arrays.asList(headerParam));
             Return returnOption = returnBuilder.build();
             List<Return> returnOptions = new ArrayList<Return>(Arrays.asList(new Return[] { returnOption }));
             addExceptionTypes(method, returnOptions);
@@ -274,7 +274,7 @@ public class SEIProcessor extends AbstractWSIntrospector{
         } else {
             // take exception types from method signature
             for (Class<?> exception : method.getExceptionTypes()) {
-                addExceptionType(null, null, 500, exception, returnOptions);
+                addExceptionType(null, null, DocReturn.HTTP_STATUS_FAULT, exception, returnOptions);
             }
         }
     }

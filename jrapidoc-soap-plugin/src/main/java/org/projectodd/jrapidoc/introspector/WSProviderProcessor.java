@@ -1,14 +1,14 @@
 package org.projectodd.jrapidoc.introspector;
 
 import org.apache.commons.lang3.StringUtils;
+import org.projectodd.jrapidoc.annotation.soap.DocReturn;
+import org.projectodd.jrapidoc.annotation.soap.DocReturns;
+import org.projectodd.jrapidoc.annotation.soap.wsprovider.DocOneWay;
 import org.projectodd.jrapidoc.annotation.soap.wsprovider.DocParam;
 import org.projectodd.jrapidoc.annotation.soap.wsprovider.DocParams;
 import org.projectodd.jrapidoc.annotation.soap.wsprovider.DocSOAPBinding;
 import org.projectodd.jrapidoc.logger.Logger;
-import org.projectodd.jrapidoc.model.Service;
-import org.projectodd.jrapidoc.model.ServiceGroup;
-import org.projectodd.jrapidoc.model.SoapBinding;
-import org.projectodd.jrapidoc.model.TransportType;
+import org.projectodd.jrapidoc.model.*;
 import org.projectodd.jrapidoc.model.type.provider.TypeProvider;
 
 import javax.xml.ws.WebServiceProvider;
@@ -16,6 +16,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class WSProviderProcessor extends AbstractWSIntrospector{
@@ -68,6 +71,7 @@ public class WSProviderProcessor extends AbstractWSIntrospector{
         addSoapBinding(method, providerClass, methodBuilder);
         addInputHeaders(method, methodBuilder);
         addInputParams(method, methodBuilder);
+        addReturn(method, methodBuilder);
         org.projectodd.jrapidoc.model.Method jrdMethod = methodBuilder.build();
         Logger.debug("{0} method processing finished", method.toString());
         return jrdMethod;
@@ -118,6 +122,67 @@ public class WSProviderProcessor extends AbstractWSIntrospector{
         }
     }
 
+    void addReturn(Method method, org.projectodd.jrapidoc.model.Method.MethodBuilder methodBuilder){
+        if (!isOneWay(method)) {
+            List<Return> returnOptions = new ArrayList<Return>();
+            addReturnOptions(method, returnOptions);
+            methodBuilder.returnOptions(returnOptions);
+        }
+    }
+
+    void addReturnOptions(Method method, List<Return> returnOptions){
+        DocReturns docReturnsAnno = method.getAnnotation(DocReturns.class);
+        DocReturn docReturnAnno = method.getAnnotation(DocReturn.class);
+
+        if(docReturnsAnno != null){
+            for (DocReturn docReturnItem:docReturnsAnno.value()){
+                addReturnOption(docReturnItem, returnOptions);
+            }
+        }else if(docReturnAnno != null){
+            addReturnOption(docReturnAnno, returnOptions);
+        }else{
+            //neither DocReturns or DocReturn exist
+            addDefaultReturnOption(returnOptions);
+        }
+    }
+
+    void addDefaultReturnOption(List<Return> returnOptions){
+        Return.ReturnBuilder returnBuilder = new Return.ReturnBuilder();
+
+        returnBuilder.httpStatus(DocReturn.HTTP_STATUS_DEFAULT);
+        org.projectodd.jrapidoc.model.object.type.Type type = typeProvider.createType(Object.class);
+        TransportType.TransportTypeBuilder transportTypeBuilder = new TransportType.TransportTypeBuilder();
+        transportTypeBuilder.type(type);
+        returnBuilder.returnTypes(Arrays.asList(new TransportType[]{transportTypeBuilder.build()}));
+    }
+
+    void addReturnOption(DocReturn docReturn, List<Return> returnOptions){
+        Return.ReturnBuilder returnBuilder = new Return.ReturnBuilder();
+
+        addDescription(docReturn, returnBuilder);
+        addHttpStatus(docReturn, returnBuilder);
+        addTransportType(docReturn, returnBuilder);
+
+        returnOptions.add(returnBuilder.build());
+    }
+
+    void addDescription(DocReturn docReturn, Return.ReturnBuilder returnBuilder) {
+        returnBuilder.description(docReturn.description());
+    }
+
+    void addTransportType(DocReturn docReturn, Return.ReturnBuilder returnBuilder) {
+        TransportType.TransportTypeBuilder transportTypeBuilder = new TransportType.TransportTypeBuilder();
+        org.projectodd.jrapidoc.model.object.type.Type type = typeProvider.createType(docReturn.type());
+        transportTypeBuilder.type(type);
+        transportTypeBuilder.isRequired(true);
+        transportTypeBuilder.description(docReturn.typeDescription());
+        returnBuilder.returnTypes(Arrays.asList(new TransportType[]{transportTypeBuilder.build()}));
+    }
+
+    void addHttpStatus(DocReturn docReturn, Return.ReturnBuilder returnBuilder) {
+        returnBuilder.httpStatus(docReturn.http());
+    }
+
     void addInputHeader(DocParam docParam, org.projectodd.jrapidoc.model.Method.MethodBuilder methodBuilder){
         TransportType transportType = createTransportType(docParam);
         methodBuilder.soapInputHeader(transportType);
@@ -134,5 +199,9 @@ public class WSProviderProcessor extends AbstractWSIntrospector{
         transportTypeBuilder.isRequired(docParam.isRequired());
         transportTypeBuilder.type(createType(docParam.type()));
         return transportTypeBuilder.build();
+    }
+
+    boolean isOneWay(Method method) {
+        return (method.getAnnotation(DocOneWay.class) != null);
     }
 }

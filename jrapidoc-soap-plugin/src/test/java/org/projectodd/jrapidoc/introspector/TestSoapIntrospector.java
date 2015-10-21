@@ -227,4 +227,26 @@ public class TestSoapIntrospector {
         Assert.assertEquals(Destination.class, ((CustomType) transportType.getType()).getAttributes().get("destination").getType());
         Assert.assertEquals(false, transportType.getIsRequired());
     }
+
+    @Test
+    public void testWsProviderReturnOptions(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleWebServiceProviderService");
+        Method method = service.getMethods().get("invoke");
+        List<Return> returnOptions = method.getReturnOptions();
+        Assert.assertEquals(3, returnOptions.size());
+        for (Return returnOption:returnOptions){
+            if(returnOption.getDescription().equals("Some description")){
+                Assert.assertEquals(Destination.class, ((CustomType)returnOption.getReturnTypes().get(0).getType()).getTypeClass());
+                Assert.assertEquals("Destination object description", returnOption.getReturnTypes().get(0).getDescription());
+            }
+        }
+    }
+
+    @Test
+    public void testWsProviderOneWay(){
+        Service service = getDefaultServiceGroup().getServices().get("WebServiceProviderWithOneWayMethodService");
+        Method method = service.getMethods().get("invoke");
+
+        Assert.assertEquals(new ArrayList<Return>(), method.getReturnOptions());
+    }
 }

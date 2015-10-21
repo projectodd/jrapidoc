@@ -13,12 +13,15 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DocReturn {
+
+    public static int HTTP_STATUS_DEFAULT = 200;
+    public static int HTTP_STATUS_FAULT = 500;
     /**
      * http status of returned message
      * 
      * @return
      */
-    int http() default 200;
+    int http() default HTTP_STATUS_DEFAULT;
 
     /**
      * @WebResult Java type from method signature

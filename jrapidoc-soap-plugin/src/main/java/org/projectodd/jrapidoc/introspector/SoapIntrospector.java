@@ -1,6 +1,7 @@
 package org.projectodd.jrapidoc.introspector;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashSet;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jws.WebService;
+import javax.xml.ws.WebServiceProvider;
 
 import org.apache.commons.lang3.StringUtils;
 import org.projectodd.jrapidoc.exception.JrapidocExecutionException;
@@ -54,9 +56,10 @@ public class SoapIntrospector extends AbstractIntrospector {
         try {
             TypeProvider typeProvider = getTypeProvider(typeProviderClass, loader);
             SEIProcessor seiProcessor = getSeiClassProcessor(typeProvider, loader);
+            WSProviderProcessor wsProviderProcessor = getWsProviderClassProcessor(typeProvider);
             APIModel.APIModelBuilder APIModelBuilder = new APIModel.APIModelBuilder();
             addCustomInfo(customInfo, APIModelBuilder);
-            addServiceGroups(groups, seiProcessor, loader, APIModelBuilder);
+            addServiceGroups(groups, seiProcessor, wsProviderProcessor, loader, APIModelBuilder);
             APIModelBuilder.types(typeProvider.getUsedTypes());
             return APIModelBuilder.build();
         } catch (Exception e) {
@@ -70,21 +73,24 @@ public class SoapIntrospector extends AbstractIntrospector {
                 : typeProviderClass), loader);
     }
 
-    ServiceGroup createServiceGroup(String basePath, String description, Set<Class<?>> resourceClasses, SEIProcessor seiProcessor)
+    ServiceGroup createServiceGroup(String basePath, String description, Set<Class<?>> resourceClasses, SEIProcessor seiProcessor, WSProviderProcessor wsProviderProcessor)
             throws JrapidocExecutionException {
         ServiceGroup.ServiceGroupBuilder serviceGroupBuilder = new ServiceGroup.ServiceGroupBuilder();
         serviceGroupBuilder.baseUrl(basePath);
         serviceGroupBuilder.description(description);
-        return seiProcessor.createServiceGroup(resourceClasses, serviceGroupBuilder);
+        seiProcessor.createServiceGroup(resourceClasses, serviceGroupBuilder);
+        ServiceGroup serviceGroup = wsProviderProcessor.createServiceGroup(resourceClasses, serviceGroupBuilder);
+        return serviceGroup;
     }
 
-    void addServiceGroups(List<ConfigGroup> groups, SEIProcessor seiProcessor, ClassLoader loader, APIModel.APIModelBuilder APIModelBuilder)
+    void addServiceGroups(List<ConfigGroup> groups, SEIProcessor seiProcessor, WSProviderProcessor wsProviderProcessor, ClassLoader loader, APIModel.APIModelBuilder APIModelBuilder)
             throws JrapidocExecutionException {
         for (ConfigGroup group : groups) {
             Logger.info("Service group {0} processing started", group.getBaseUrl());
             Set<Class<?>> resourceClasses = getScannedClasses(group.getIncludes(), group.getExcludes(), loader, WebService.class);
+            resourceClasses.addAll(getScannedClasses(group.getIncludes(), group.getExcludes(), loader, WebServiceProvider.class));
             resourceClasses = removeInterfaces(resourceClasses);
-            ServiceGroup serviceGroup = createServiceGroup(group.getBaseUrl(), group.getDescription(), resourceClasses, seiProcessor);
+            ServiceGroup serviceGroup = createServiceGroup(group.getBaseUrl(), group.getDescription(), resourceClasses, seiProcessor, wsProviderProcessor);
             APIModelBuilder.resourceGroup(serviceGroup);
             Logger.info("Service group {0} processing finished", group.getBaseUrl());
         }
@@ -92,6 +98,10 @@ public class SoapIntrospector extends AbstractIntrospector {
 
     SEIProcessor getSeiClassProcessor(TypeProvider typeProvider, ClassLoader loader) {
         return new SEIProcessor(typeProvider, loader);
+    }
+
+    WSProviderProcessor getWsProviderClassProcessor(TypeProvider typeProvider){
+        return new WSProviderProcessor(typeProvider);
     }
 
     Set<Class<?>> removeInterfaces(Set<Class<?>> seiClasses) {

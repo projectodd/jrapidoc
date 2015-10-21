@@ -1,5 +1,6 @@
 package airservice.services;
 
+import org.projectodd.jrapidoc.annotation.soap.wsprovider.DocSOAPBinding;
 import org.w3c.dom.Node;
 
 import javax.annotation.Resource;
@@ -30,6 +31,7 @@ import java.util.*;
         targetNamespace = "http://jaxws.webservices.examples/"
 //        ,wsdlLocation = "SimpleClientService.wsdl"
 )
+@DocSOAPBinding(parameterStyle = DocSOAPBinding.ParameterStyle.BARE, style = DocSOAPBinding.Style.RPC, use = DocSOAPBinding.Use.ENCODED)
 public class SimpleClientProviderImpl implements Provider<Source> {
 
     @Resource

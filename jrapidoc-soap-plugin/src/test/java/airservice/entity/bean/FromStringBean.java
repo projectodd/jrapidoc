@@ -3,9 +3,6 @@ package airservice.entity.bean;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by papa on 3.1.15.
- */
 public class FromStringBean implements Comparable {
 
     private String name;

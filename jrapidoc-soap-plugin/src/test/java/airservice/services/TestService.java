@@ -17,9 +17,6 @@ import javax.xml.ws.ProtocolException;
 import javax.xml.ws.WebServiceException;
 import javax.xml.ws.soap.SOAPFaultException;
 
-/**
- * Created by papa on 1.2.15.
- */
 @WebService
 public class TestService {
 

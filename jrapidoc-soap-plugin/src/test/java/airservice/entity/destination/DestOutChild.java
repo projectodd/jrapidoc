@@ -5,7 +5,9 @@
  */
 package airservice.entity.destination;
 
-public class DestOutChild extends DestinationOutput {
+import airservice.entity.ObjectInterface;
+
+public class DestOutChild extends DestinationOutput implements ObjectInterface {
 
     public String varInDestChild = "inDestChild";
 

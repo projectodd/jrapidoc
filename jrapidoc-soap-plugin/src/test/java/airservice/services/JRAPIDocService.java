@@ -11,9 +11,6 @@ import javax.jws.*;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.Holder;
 
-/**
- * Created by papa on 8.4.15.
- */
 @WebService
 @DocDescription("Web service description")
 @SOAPBinding(use = SOAPBinding.Use.ENCODED)

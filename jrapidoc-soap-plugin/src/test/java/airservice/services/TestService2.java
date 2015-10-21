@@ -10,9 +10,6 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.WebServiceContext;
 
-/**
- * Created by papa on 1.2.15.
- */
 @WebService(
         name = "nameNAME",
         portName = "portNameNAME",

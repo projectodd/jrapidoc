@@ -2,9 +2,6 @@ package airservice.exception;
 
 import javax.xml.ws.WebFault;
 
-/**
- * Created by papa on 3.2.15.
- */
 @WebFault(
     name = "AirserviceException"
 )

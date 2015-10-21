@@ -8,9 +8,6 @@ import javax.xml.ws.handler.MessageContext;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by papa on 5.2.15.
- */
 @WebService
 public class AuthService {
 

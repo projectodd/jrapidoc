@@ -1,9 +1,11 @@
 package airservice.entity.destination;
 
-/**
- * Created by papa on 25.4.15.
- */
-public class D1<T extends Destination>{
+import airservice.entity.ObjectInterface;
 
-    public T destination;
+import java.util.List;
+
+public class D1<T1 extends Destination & ObjectInterface, T2 extends T1>{
+
+    public T1 destination;
+    public T2 object;
 }

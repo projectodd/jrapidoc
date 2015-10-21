@@ -41,4 +41,20 @@ public class CustomType extends org.projectodd.jrapidoc.model.object.type.Type {
     public String toString() {
         return "CustomType{" + "attributes=" + attributes + ", typeClass=" + typeClass + ", enumerations=" + enumerations + "} " + super.toString();
     }
+
+    /**
+     * For testing only
+     * @return
+     */
+    public Class<?> getTypeClass() {
+        return typeClass;
+    }
+
+    /**
+     * For testing only
+     * @return
+     */
+    public Map<String, BeanProperty> getAttributes() {
+        return attributes;
+    }
 }

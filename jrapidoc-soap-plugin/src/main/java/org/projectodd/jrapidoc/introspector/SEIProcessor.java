@@ -24,19 +24,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public class SEIProcessor {
+public class SEIProcessor extends AbstractWSIntrospector{
 
-    TypeProvider typeProvider;
     ClassLoader loader;
 
     public SEIProcessor(TypeProvider typeProvider, ClassLoader loader) {
-        this.typeProvider = typeProvider;
+        super(typeProvider);
         this.loader = loader;
     }
 
     public ServiceGroup createServiceGroup(Set<Class<?>> seiClasses, ServiceGroup.ServiceGroupBuilder serviceGroupBuilder)
             throws JrapidocExecutionException {
         for (Class<?> seiClass : seiClasses) {
+            if(!seiClass.isAnnotationPresent(WebService.class)){
+                continue;
+            }
             Logger.info("{0} processing started", seiClass.getCanonicalName());
             seiClass = getSEI(seiClass);
             Service service = createEndpoint(seiClass);
@@ -81,19 +83,11 @@ public class SEIProcessor {
         }
     }
 
-    String getDescription(Annotation[] annotations) {
-        DocDescription docDescription = getAnnotation(annotations, DocDescription.class);
-        if (docDescription == null) {
-            return null;
-        } else {
-            return docDescription.value();
-        }
-    }
-
     org.projectodd.jrapidoc.model.Method createMethod(Method method, Class<?> seiClass) {
         Logger.debug("{0} method processing started", method.toString());
         org.projectodd.jrapidoc.model.Method.MethodBuilder methodBuilder = new org.projectodd.jrapidoc.model.Method.MethodBuilder();
-        methodBuilder.description(getDescription(method.getDeclaredAnnotations())).isAsynchronous(true);
+        methodBuilder.description(getDescription(method.getDeclaredAnnotations()));
+        methodBuilder.isAsynchronous(true);
         addOperationName(method, methodBuilder);
         addInputHeaders(method, methodBuilder);
         addInputParams(method, methodBuilder);
@@ -147,7 +141,7 @@ public class SEIProcessor {
             addOutputParams(method, returnBuilder);
             HeaderParam headerParam = new HeaderParam.HeaderParamBuilder().setName(HeaderParam.CONTENT_TYPE)
                     .setOptions(new String[] { "application/xml" }).setRequired(true).build();
-            returnBuilder.httpStatus(200).headerParams(Arrays.asList(headerParam));
+            returnBuilder.httpStatus(DocReturn.HTTP_STATUS_DEFAULT).headerParams(Arrays.asList(headerParam));
             Return returnOption = returnBuilder.build();
             List<Return> returnOptions = new ArrayList<Return>(Arrays.asList(new Return[] { returnOption }));
             addExceptionTypes(method, returnOptions);
@@ -157,7 +151,7 @@ public class SEIProcessor {
 
     /**
      * Used for non exception return option
-     * 
+     *
      * @param method
      * @param returnBuilder
      */
@@ -179,10 +173,6 @@ public class SEIProcessor {
             }
         }
         return returnAnno;
-    }
-
-    org.projectodd.jrapidoc.model.object.type.Type createType(Type param) {
-        return typeProvider.createType(param);
     }
 
     <T extends Annotation> T getAnnotation(Annotation[] annotations, Class<T> annotation) {
@@ -284,7 +274,7 @@ public class SEIProcessor {
         } else {
             // take exception types from method signature
             for (Class<?> exception : method.getExceptionTypes()) {
-                addExceptionType(null, null, 500, exception, returnOptions);
+                addExceptionType(null, null, DocReturn.HTTP_STATUS_FAULT, exception, returnOptions);
             }
         }
     }

@@ -1,9 +1,15 @@
 package org.projectodd.jrapidoc.introspector;
 
+import airservice.entity.destination.D1;
+import airservice.entity.destination.DestOutChild;
+import airservice.entity.destination.Destination;
+import airservice.entity.destination.DestinationEntity;
 import airservice.services.TestService;
+import org.projectodd.jrapidoc.annotation.soap.wsprovider.DocSOAPBinding;
 import org.projectodd.jrapidoc.exception.JrapidocExecutionException;
 import org.projectodd.jrapidoc.exception.JrapidocFailureException;
 import org.projectodd.jrapidoc.model.*;
+import org.projectodd.jrapidoc.model.object.type.CustomType;
 import org.projectodd.jrapidoc.plugin.ConfigGroup;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -16,9 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by papa on 1.5.15.
- */
 public class TestSoapIntrospector {
 
     public static final String DEFAULT_GROUP = "http://localhost:9080/airservice/soap";
@@ -171,5 +174,79 @@ public class TestSoapIntrospector {
         Assert.assertEquals("Description of input output object", outSoapHeader.getDescription());
         Assert.assertEquals(true, inSoapHeader.getIsRequired());
         Assert.assertEquals(null, outSoapHeader.getIsRequired());
+    }
+
+    @Test
+    public void testWsProviderDescription(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleWebServiceProviderService");
+        Method method = service.getMethods().get("invoke");
+        Assert.assertEquals("WebServiceProvider description", service.getDescription());
+        Assert.assertEquals("Operation description", method.getDescription());
+    }
+
+    @Test
+    public void testWsProviderSoapBindingOnMethod(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleWebServiceProviderService");
+        Method method = service.getMethods().get("invoke");
+        Assert.assertEquals("WRAPPED", method.getSoapBinding().getParameterStyle());
+        Assert.assertEquals("DOCUMENT", method.getSoapBinding().getStyle());
+        Assert.assertEquals("ENCODED", method.getSoapBinding().getUse());
+    }
+
+    @Test
+    public void testWsProviderSoapBindingOnClass(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleClientService");
+        Method method = service.getMethods().get("invoke");
+        Assert.assertEquals("BARE", method.getSoapBinding().getParameterStyle());
+        Assert.assertEquals("RPC", method.getSoapBinding().getStyle());
+        Assert.assertEquals("ENCODED", method.getSoapBinding().getUse());
+    }
+
+    @Test
+    public void testWsProviderInputHeaders(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleWebServiceProviderService");
+        Method method = service.getMethods().get("invoke");
+        List<TransportType> soapInputHeaders = method.getSoapInputHeaders();
+        Assert.assertEquals(1, soapInputHeaders.size());
+        TransportType transportType = soapInputHeaders.get(0);
+        Assert.assertEquals("Destination object description", transportType.getDescription());
+        Assert.assertEquals(Destination.class, ((CustomType)transportType.getType()).getTypeClass());
+        Assert.assertEquals(true, transportType.getIsRequired());
+    }
+
+    @Test
+    public void testWsProviderInputParams(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleWebServiceProviderService");
+        Method method = service.getMethods().get("invoke");
+        List<TransportType> soapInputParams = method.getParameters();
+        Assert.assertEquals(1, soapInputParams.size());
+        TransportType transportType = soapInputParams.get(0);
+        Assert.assertEquals("D1 object description", transportType.getDescription());
+        Assert.assertEquals(D1.class, ((CustomType)transportType.getType()).getTypeClass());
+        Assert.assertEquals(Destination.class, ((CustomType) transportType.getType()).getAttributes().get("object").getType());
+        Assert.assertEquals(Destination.class, ((CustomType) transportType.getType()).getAttributes().get("destination").getType());
+        Assert.assertEquals(false, transportType.getIsRequired());
+    }
+
+    @Test
+    public void testWsProviderReturnOptions(){
+        Service service = getDefaultServiceGroup().getServices().get("SimpleWebServiceProviderService");
+        Method method = service.getMethods().get("invoke");
+        List<Return> returnOptions = method.getReturnOptions();
+        Assert.assertEquals(3, returnOptions.size());
+        for (Return returnOption:returnOptions){
+            if(returnOption.getDescription().equals("Some description")){
+                Assert.assertEquals(Destination.class, ((CustomType)returnOption.getReturnTypes().get(0).getType()).getTypeClass());
+                Assert.assertEquals("Destination object description", returnOption.getReturnTypes().get(0).getDescription());
+            }
+        }
+    }
+
+    @Test
+    public void testWsProviderOneWay(){
+        Service service = getDefaultServiceGroup().getServices().get("WebServiceProviderWithOneWayMethodService");
+        Method method = service.getMethods().get("invoke");
+
+        Assert.assertEquals(new ArrayList<Return>(), method.getReturnOptions());
     }
 }

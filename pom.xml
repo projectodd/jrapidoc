@@ -50,7 +50,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <org.projectodd.jrapidoc.version>0.7.0-SNAPSHOT</org.projectodd.jrapidoc.version>
         <com.fasterxml.jackson.version>2.5.0</com.fasterxml.jackson.version>
     </properties>
 
@@ -70,22 +69,22 @@
             <dependency>
                 <groupId>org.projectodd.jrapidoc</groupId>
                 <artifactId>jrapidoc-plugin-base</artifactId>
-                <version>${org.projectodd.jrapidoc.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectodd.jrapidoc</groupId>
                 <artifactId>jrapidoc-model</artifactId>
-                <version>${org.projectodd.jrapidoc.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectodd.jrapidoc</groupId>
                 <artifactId>jrapidoc-annotation</artifactId>
-                <version>${org.projectodd.jrapidoc.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectodd.jrapidoc</groupId>
                 <artifactId>jrapidoc-common</artifactId>
-                <version>${org.projectodd.jrapidoc.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <!--JRAPIDoc END -->
             <!--StringUtils BEGIN -->

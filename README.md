@@ -19,7 +19,7 @@ It is recommended to put the plugin below into your WAR module's `pom.xml`. Simi
 <plugin>
   <groupId>org.projectodd.jrapidoc</groupId>
   <artifactId>jrapidoc-rest-plugin</artifactId>
-  <version>0.5.0.Final</version>
+  <version>0.6.0.Final</version>
   <executions><execution>
     <id>run</id>
     <goals><goal>run</goal></goals>
@@ -56,7 +56,7 @@ Though none documentation annotations are required, it makes the output HTML doc
 <dependency>
   <groupId>org.projectodd.jrapidoc</groupId>
   <artifactId>jrapidoc-annotation</artifactId>
-  <version>0.5.0.Final</version>
+  <version>0.6.0.Final</version>
 </dependency>
 ```
 
